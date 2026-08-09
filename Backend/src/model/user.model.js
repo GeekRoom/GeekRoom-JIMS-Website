@@ -1,22 +1,17 @@
 const mongoose = require('mongoose')
 
-let usermodule;
-try {
-    const UserSchema = new mongoose.Schema({
-        name: {
-            type: String
-        },
-        email: {
-            type: String
-        },
-        password: {
-            type: String
-        }
-    })
+const UserSchema = new mongoose.Schema({
+    name: {
+        type: String
+    },
+    email: {
+        type: String
+    },
+    password: {
+        type: String
+    }
+})
 
-    usermodule = mongoose.model('user', UserSchema)
-} catch (error) {
-    console.log('Error defining user model:', error);
-}
+const usermodule = mongoose.model('user', UserSchema)
 
 module.exports = usermodule
