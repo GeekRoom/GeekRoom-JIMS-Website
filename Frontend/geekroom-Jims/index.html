@@ -5,6 +5,111 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GeekRoom JIMS | Official Coding Community</title>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Outfit:wght@300;400;500;600;700;800;900&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#ffdbcc",
+                        "tertiary-container": "#059eff",
+                        "surface-container-low": "#261812",
+                        "border-blue": "rgba(0, 240, 255, 0.3)",
+                        "surface-container": "#2b1c16",
+                        "on-tertiary-fixed-variant": "#00497b",
+                        "on-secondary-fixed": "#001849",
+                        "surface-container-highest": "#41312a",
+                        "secondary-container": "#0266ff",
+                        "error": "#ffb4ab",
+                        "inverse-surface": "#f8ddd2",
+                        "surface-container-lowest": "#170b06",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "error-container": "#93000a",
+                        "surface-variant": "#41312a",
+                        "on-tertiary-fixed": "#001d35",
+                        "tertiary": "#9ccaff",
+                        "outline": "#a98a7d",
+                        "on-primary-container": "#572000",
+                        "orange-neon": "#FF3D00",
+                        "on-secondary": "#002b75",
+                        "inverse-primary": "#a04100",
+                        "primary-fixed-dim": "#ffb693",
+                        "secondary": "#b3c5ff",
+                        "surface": "#1d100a",
+                        "on-surface-variant": "#e2bfb0",
+                        "primary": "#ffb693",
+                        "secondary-fixed": "#dae1ff",
+                        "on-error": "#690005",
+                        "on-secondary-fixed-variant": "#003fa4",
+                        "text-muted": "#94A3B8",
+                        "on-surface": "#f8ddd2",
+                        "surface-bright": "#46362e",
+                        "on-tertiary-container": "#003357",
+                        "inverse-on-surface": "#3d2d26",
+                        "on-primary-fixed": "#351000",
+                        "surface-dim": "#1d100a",
+                        "outline-variant": "#5a4136",
+                        "bg-dark": "#07080D",
+                        "bg-card": "rgba(13, 17, 28, 0.65)",
+                        "on-background": "#f8ddd2",
+                        "secondary-fixed-dim": "#b3c5ff",
+                        "border-orange": "rgba(255, 107, 0, 0.35)",
+                        "surface-container-high": "#362720",
+                        "blue-cyan": "#00F0FF",
+                        "tertiary-fixed-dim": "#9ccaff",
+                        "tertiary-fixed": "#d0e4ff",
+                        "text-dim": "#64748B",
+                        "on-secondary-container": "#f9f7ff",
+                        "text-main": "#F8FAFC",
+                        "on-tertiary": "#003257",
+                        "background": "#1d100a",
+                        "on-primary": "#561f00",
+                        "on-error-container": "#ffdad6",
+                        "primary-container": "#ff6b00",
+                        "surface-tint": "#ffb693"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "0.75rem",
+                        "stack-md": "1.5rem",
+                        "stack-lg": "2.5rem",
+                        "grid-margin": "2rem",
+                        "gutter": "1.5rem",
+                        "stack-xl": "4rem"
+                    },
+                    "fontFamily": {
+                        "label-md": ["JetBrains Mono"],
+                        "headline-md": ["Space Grotesk"],
+                        "label-sm": ["JetBrains Mono"],
+                        "body-md": ["Outfit"],
+                        "body-sm": ["Outfit"],
+                        "headline-xl": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"],
+                        "body-lg": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
   </head>
   <body>
     <div id="root"></div>
