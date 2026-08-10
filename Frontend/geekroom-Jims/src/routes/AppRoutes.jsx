@@ -5,10 +5,14 @@ import Events from '../pages/Events/Events';
 import Team from '../pages/Team/Team';
 import Gallery from '../pages/Gallery/Gallery';
 import Contact from '../pages/Contact/Contact';
+import About from '../pages/About/About';
 
 export const AppRoutes = () => {
   return (
     <Routes>
+      {/* The converted code.html component */}
+      <Route path="/about" element={<About />} />
+      
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
         <Route path="events" element={<Events />} />
