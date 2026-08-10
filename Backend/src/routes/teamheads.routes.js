@@ -1,5 +1,5 @@
 const express = require('express');
-const upload = require('../middleware/upload.middleware');
+const multer = require('multer');
 const {
     createTeamHead,
     getAllTeamHeads,
@@ -9,6 +9,20 @@ const {
 } = require('../controllers/teamheads.controller');
 
 const router = express.Router();
+
+const upload = multer({
+    storage: multer.memoryStorage(),
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype.startsWith('image/')) {
+            cb(null, true);
+        } else {
+            cb(new Error('Only image files are allowed'), false);
+        }
+    },
+    limits: {
+        fileSize: 5 * 1024 * 1024
+    }
+});
 
 router.post('/create_team_head', upload.single('image'), createTeamHead);
 router.get('/get_team_heads', getAllTeamHeads);
