@@ -4,6 +4,7 @@ const multer = require('multer');
 const eventRoutes = require('./routes/events.routes');
 const teamHeadRoutes = require('./routes/teamheads.routes');
 const achievementRoutes = require('./routes/acheivements.routes');
+const contactRoutes = require('./routes/contact.routes');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use('/api/events', eventRoutes);
 app.use('/api/team-heads', teamHeadRoutes);
 app.use('/api/achievements', achievementRoutes);
+app.use('/api/contact', contactRoutes);
 
 app.use((req, res) => {
     res.status(404).json({
