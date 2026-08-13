@@ -13,10 +13,12 @@ const acheivementschema = mongoose.Schema({
     },
     tagname: {
         type: String
+    },
+    winnerName: {
+        type: String
     }
 
-
-})
+}, { timestamps: true });
 
 const acheivementmodule = mongoose.model('acheivement', acheivementschema)
 
