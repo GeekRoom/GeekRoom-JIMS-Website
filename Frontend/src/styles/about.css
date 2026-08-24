@@ -1,0 +1,77 @@
+/* ==========================================================================
+   ABOUT PAGE STYLES - GEEK ROOM DESIGN SYSTEM ALIGNED
+   ========================================================================== */
+
+.about-page-wrapper {
+  min-height: 100vh;
+  position: relative;
+  color: var(--text-main, #f8fafc);
+  font-family: var(--font-main, 'Outfit', sans-serif);
+}
+
+/* Glass Card & Hover Animations for About Page */
+.about-glass-card {
+  background: rgba(13, 17, 28, 0.65);
+  backdrop-filter: blur(20px) saturate(190%);
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.about-glass-card:hover {
+  border-color: rgba(255, 107, 0, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 107, 0, 0.2);
+}
+
+/* Purpose Interactive Accordion Card */
+.purpose-card-interactive {
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(13, 17, 28, 0.7);
+  backdrop-filter: blur(16px);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.purpose-card-interactive:hover,
+.purpose-card-interactive.active {
+  border-color: var(--orange-primary, #ff6b00);
+  background: rgba(13, 17, 28, 0.85);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 107, 0, 0.15);
+}
+
+/* FAQ Interactive Accordion Item */
+.faq-accordion-item {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(13, 17, 28, 0.65);
+  backdrop-filter: blur(20px);
+  border-radius: 14px;
+  padding: 20px 24px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.faq-accordion-item:hover,
+.faq-accordion-item.active {
+  border-color: var(--orange-primary, #ff6b00);
+  box-shadow: 0 0 25px rgba(255, 107, 0, 0.15);
+}
+
+.faq-accordion-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.faq-accordion-item.active .faq-accordion-content {
+  grid-template-rows: 1fr;
+}
+
+.faq-accordion-content > div {
+  overflow: hidden;
+}

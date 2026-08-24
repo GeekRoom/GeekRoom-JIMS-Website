@@ -1,0 +1,195 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-dark: #07080d;
+  --bg-card: rgba(13, 17, 28, 0.65);
+  --orange-primary: #ff6b00;
+  --orange-neon: #ff3d00;
+  --orange-border: rgba(255, 107, 0, 0.35);
+  --blue-primary: #0066ff;
+  --blue-cyan: #00f0ff;
+  --blue-border: rgba(0, 240, 255, 0.3);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+
+  --font-main: 'Outfit', sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  position: relative;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+::selection { background: rgba(255, 107, 0, 0.35); color: #fff; }
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--orange-primary), var(--blue-primary));
+  border-radius: 8px;
+}
+
+/* Interactive Halftone Canvas & Background Spotlights */
+#halftone-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.bg-halftone-grid {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1.2px, transparent 1.2px);
+  background-size: 28px 28px;
+}
+
+.ambient-lights {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(255, 107, 0, 0.14) 0%, transparent 50%),
+    radial-gradient(circle at 80% 60%, rgba(0, 102, 255, 0.14) 0%, transparent 55%),
+    radial-gradient(circle at 50% 90%, rgba(0, 240, 255, 0.1) 0%, transparent 60%);
+}
+
+/* Gradient Text Classes */
+.text-gradient-orange {
+  background: linear-gradient(135deg, #ffffff 0%, #ff6b00 60%, #ff3d00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-blue {
+  background: linear-gradient(135deg, #ffffff 0%, #0066ff 50%, #00f0ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-title-premium {
+  position: relative;
+  width: fit-content;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.hero-title-word {
+  color: transparent;
+  letter-spacing: 0;
+  background:
+    linear-gradient(180deg, #fff7ed 0%, #ffb077 42%, var(--orange-primary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: 0 8px 24px rgba(255, 107, 0, 0.18);
+}
+
+.hero-title-word::selection {
+  -webkit-text-fill-color: #fff;
+}
+
+.hero-title-dot {
+  margin-left: 0.04em;
+  color: var(--blue-cyan);
+  text-shadow: 0 0 12px rgba(0, 240, 255, 0.45);
+}
+
+/* Reusable Glassmorphism Cards */
+.glass-panel, .glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px) saturate(190%);
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  border-color: var(--orange-border);
+  transform: translateY(-6px) perspective(1000px) rotateX(1.5deg) rotateY(-1.5deg);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 107, 0, 0.35);
+}
+
+/* Section Badge Pill Component */
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 13px;
+  background: rgba(255, 107, 0, 0.1);
+  border: 1px solid rgba(255, 107, 0, 0.3);
+  border-radius: 9999px;
+  color: var(--orange-primary);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.24em;
+  color: var(--orange-primary);
+}
+
+.section-kicker::after {
+  content: "";
+  height: 1px;
+  width: 4rem;
+  background: linear-gradient(90deg, var(--orange-border), transparent);
+}
+
+/* GLOBAL FOOTER STYLES */
+.footer-section { border-top: 1px solid rgba(255, 255, 255, 0.1); padding: 80px 0 40px 0; background: rgba(5, 6, 10, 0.95); margin-top: 120px !important; position: relative; z-index: 20; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 40px; margin-bottom: 50px; }
+.footer-brand p { color: var(--text-muted); font-size: 0.92rem; margin: 16px 0 22px 0; max-width: 320px; }
+.social-links { display: flex; gap: 12px; }
+.social-icon { width: 38px; height: 38px; border-radius: 50%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-main); display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.2s ease; }
+.social-icon:hover { background: var(--orange-primary); border-color: var(--orange-primary); color: #ffffff; }
+
+.footer-col-title { font-size: 1.1rem; margin-bottom: 18px; font-weight: 700; }
+.footer-links-list { list-style: none; display: flex; flex-direction: column; gap: 12px; padding: 0; margin: 0; }
+.footer-links-list a { color: var(--text-muted); text-decoration: none; font-size: 0.92rem; transition: color 0.2s ease; }
+.footer-links-list a:hover { color: var(--orange-primary); }
+.footer-bottom { text-align: center; padding-top: 28px; border-top: 1px solid rgba(255, 255, 255, 0.05); color: var(--text-dim); font-size: 0.88rem; }
+
+@media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; } }
