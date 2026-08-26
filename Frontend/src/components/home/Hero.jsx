@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Hero() {
   const [stats, setStats] = useState({ members: 0, events: 0, partners: 0, prize: 0 });
@@ -54,9 +55,9 @@ export default function Hero() {
           </p>
 
           <div className="hero-cta-group">
-            <a href="#events" className="btn-primary-neon">
+            <Link to="/events" className="btn-primary-neon">
               Explore Events <i className="fa-solid fa-arrow-right" />
-            </a>
+            </Link>
           </div>
 
           {/* Stats Counter Grid */}

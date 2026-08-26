@@ -8,36 +8,32 @@ export default function Navbar() {
     <>
       <header className="header-nav-wrapper">
         <nav className="navbar-glass-minimal">
-          {/* Left Links */}
-          <ul className="nav-links-left">
-            <li>
-              <NavLink to="/" end className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-                Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/events" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-                Events
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/about" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-                About Us
-              </NavLink>
-            </li>
-          </ul>
-
-          {/* Center Logo */}
-          <NavLink to="/" className="nav-logo-center">
-            <img src="/logo.png" alt="Geek Room Logo" className="logo-badge-icon" />
+          {/* Brand Logo - Left */}
+          <NavLink to="/" className="nav-logo-brand">
+            <img src="/Photos/logo.png" alt="Geek Room Logo" className="logo-badge-icon" />
             <div className="logo-badge-text">
-              GEEK<span>ROOM</span> <small style={{ fontSize: '0.65rem', color: 'var(--orange-primary)' }}>JIMS</small>
+              GEEK ROOM <span>JIMS</span>
             </div>
           </NavLink>
 
-          {/* Right Links */}
-          <div className="nav-links-right">
-            <ul style={{ display: 'flex', alignItems: 'center', gap: '20px', listStyle: 'none' }}>
+          {/* Desktop Navigation - Right */}
+          <div className="nav-links-desktop">
+            <ul className="nav-links-list">
+              <li>
+                <NavLink to="/" end className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+                  Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/events" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+                  Events
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/about" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+                  About Us
+                </NavLink>
+              </li>
               <li>
                 <NavLink to="/highlights" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
                   Highlights

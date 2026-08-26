@@ -5,6 +5,7 @@ import "../../styles/highlights.css";
 
 export default function HighlightsPage() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
@@ -24,6 +25,15 @@ export default function HighlightsPage() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
+
+  // Auto-play slideshow timer
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(() => {
+      nextSlide();
+    }, 3500); // 3.5 seconds
+    return () => clearInterval(timer);
+  }, [isPaused]);
 
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
@@ -85,9 +95,20 @@ export default function HighlightsPage() {
   };
 
   return (
-    <div className="coverflow-page-wrapper">
+    <div className="coverflow-page-wrapper pt-32 sm:pt-40">
       <div className="coverflow-bg-glow-1" />
       <div className="coverflow-bg-glow-2" />
+
+      {/* Premium Header matching page design */}
+      <div className="relative z-20 mx-auto w-full max-w-7xl px-6 mb-8 text-left">
+        <h1 className="hero-title-premium block font-display text-4xl font-extrabold sm:text-6xl mb-4">
+          <span className="hero-title-word text-white">Highlights</span>
+          <span className="hero-title-dot text-[#ff6b00]">.</span>
+        </h1>
+        <p className="max-w-2xl text-[15px] leading-7 text-[#94a3b8]">
+          Take a look back at some of the most memorable moments, hackathons, and workshops hosted by Geek Room JIMS.
+        </p>
+      </div>
 
       {/* Navigation Arrows */}
       <button
@@ -114,6 +135,8 @@ export default function HighlightsPage() {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
       >
         {coverflowPhotos.map((photo, index) => {
           const isActive = index === activeIndex;

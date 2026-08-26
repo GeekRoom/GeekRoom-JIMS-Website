@@ -6,7 +6,7 @@ const handleResponse = async (response) => {
         try {
             const errData = await response.json();
             if (errData.message) errorMessage = errData.message;
-        } catch (e) {
+        } catch {
             // Ignore if not JSON
         }
         const error = new Error(errorMessage);

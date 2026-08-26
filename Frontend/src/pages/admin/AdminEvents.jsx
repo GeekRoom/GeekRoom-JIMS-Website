@@ -150,7 +150,15 @@ export default function AdminEvents() {
                 </div>
                 <div>
                   <label className="block text-sm text-gray-400 mb-1">Category</label>
-                  <input name="category" value={formData.category} onChange={handleInputChange} className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white" />
+                  <select name="category" value={formData.category} onChange={handleInputChange} className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white">
+                    <option value="">Select Category</option>
+                    <option value="Hackathons">Hackathons</option>
+                    <option value="Workshops">Workshops</option>
+                    <option value="Seminars">Seminars</option>
+                    <option value="Competitions">Competitions</option>
+                    <option value="Ideathon">Ideathon</option>
+                    <option value="Orientation">Orientation</option>
+                  </select>
                 </div>
                 <div>
                   <label className="block text-sm text-gray-400 mb-1">Status</label>
@@ -176,12 +184,12 @@ export default function AdminEvents() {
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Registration Link</label>
-                  <input name="registration_link" value={formData.registration_link} onChange={handleInputChange} className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white" />
+                  <label className="block text-sm text-gray-400 mb-1">Registration Link {formData.status === 'upcoming' && '*'}</label>
+                  <input required={formData.status === 'upcoming'} name="registration_link" value={formData.registration_link} onChange={handleInputChange} className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white" />
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Reg Deadline</label>
-                  <input type="datetime-local" name="registration_deadline" value={formData.registration_deadline} onChange={handleInputChange} className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white" />
+                  <label className="block text-sm text-gray-400 mb-1">Reg Deadline {formData.status === 'upcoming' && '*'}</label>
+                  <input required={formData.status === 'upcoming'} type="datetime-local" name="registration_deadline" value={formData.registration_deadline} onChange={handleInputChange} className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white" />
                 </div>
               </div>
 

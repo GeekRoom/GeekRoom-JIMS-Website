@@ -16,7 +16,7 @@ export default function EventsSection() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [activeYear, setActiveYear] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [_loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -37,7 +37,10 @@ export default function EventsSection() {
           meta: [
             { label: "Date", value: new Date(backendEvent.date).toLocaleDateString() },
             { label: "Venue", value: backendEvent.venue || "TBA" },
-            { label: "Format", value: backendEvent.format || "offline" }
+            { label: "Format", value: backendEvent.format || "offline" },
+            ...(backendEvent.status === "upcoming" && backendEvent.registration_deadline
+              ? [{ label: "Reg Deadline", value: new Date(backendEvent.registration_deadline).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) }]
+              : [])
           ]
         }));
         setEvents(mappedEvents);
@@ -133,7 +136,7 @@ export default function EventsSection() {
     const renderEvent = (event) => (
       <div
         key={event.id}
-        className={`card-tilt-wrap ${
+        className={`card-tilt-wrap w-full max-w-[600px] mx-auto ${
           variant === "upcoming" ? "is-upcoming" : "is-past"
         }`}
       >
@@ -141,18 +144,10 @@ export default function EventsSection() {
       </div>
     );
 
-    if (variant === "upcoming") {
-      return (
-        <div className="w-full flex flex-col items-start gap-8">
-          {eventList.map(renderEvent)}
-        </div>
-      );
-    }
-
     return (
-      <div className="grid grid-cols-1 gap-10 md:grid-cols-[repeat(2,minmax(0,520px))] items-start">
-        <div className="flex flex-col items-end gap-6">{leftEvents.map(renderEvent)}</div>
-        <div className="flex flex-col items-start gap-6">{rightEvents.map(renderEvent)}</div>
+      <div className={`grid grid-cols-1 gap-10 md:grid-cols-2 items-start ${variant === "upcoming" ? "max-w-6xl mx-auto" : ""}`}>
+        <div className={`flex flex-col gap-6 ${variant === "past" ? "items-end" : "items-center"}`}>{leftEvents.map(renderEvent)}</div>
+        <div className={`flex flex-col gap-6 ${variant === "past" ? "items-start" : "items-center"}`}>{rightEvents.map(renderEvent)}</div>
       </div>
     );
   };
@@ -198,12 +193,12 @@ export default function EventsSection() {
         <div className="flex flex-wrap gap-3 mb-12">
           {[
             { key: "all", label: "All" },
-            { key: "hackathon", label: "Hackathons" },
-            { key: "workshop", label: "Workshops" },
-            { key: "seminar", label: "Seminars" },
-            { key: "competition", label: "Competitions" },
-            { key: "ideathon", label: "Ideathon" },
-            { key: "orientation", label: "Orientation" },
+            { key: "Hackathons", label: "Hackathons" },
+            { key: "Workshops", label: "Workshops" },
+            { key: "Seminars", label: "Seminars" },
+            { key: "Competitions", label: "Competitions" },
+            { key: "Ideathon", label: "Ideathon" },
+            { key: "Orientation", label: "Orientation" },
           ].map((item) => (
             <button
               key={item.key}
@@ -240,69 +235,92 @@ export default function EventsSection() {
           </div>
         ) : (
           <>
-        {/* Upcoming Section with Premium Backdrop */}
-        <div className="upcoming-backdrop-wash my-10 p-6 sm:p-10 relative">
-          <p className="section-kicker mb-6">
-            UPCOMING EVENTS
-          </p>
-
-          <EventGrid eventList={upcomingEvents} variant="upcoming" />
-        </div>
-
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-[#ff6b00]/30 to-transparent my-16" />
-
-        {/* Past Events Section */}
-        <div className="mb-6 flex items-center justify-between gap-4">
-          <p className="section-kicker">
-            PAST EVENTS
-          </p>
-        </div>
-
-        <div className="grid gap-8 lg:grid-cols-[140px_1fr] items-start">
-          <aside className="year-rail sticky top-20 z-30 self-start lg:top-24">
-            <div className="year-rail-shell flex gap-2 overflow-x-auto rounded-2xl border border-white/15 bg-[#0d111c]/90 p-2 shadow-2xl backdrop-blur-2xl lg:max-h-[75vh] lg:flex-col lg:overflow-y-auto">
-              {pastYears.map((year, index) => (
-                <a
-                  key={year}
-                  href={`#year-${year}`}
-                  className={`year-jump group shrink-0 rounded-xl border px-4 py-3 text-left transition duration-300 lg:px-3 ${
-                    activeYear === year ? "is-active" : ""
-                  }`}
-                  style={{ "--year-index": index }}
-                  aria-current={activeYear === year ? "true" : undefined}
-                >
-                  <span className="block font-mono text-[10px] uppercase text-slate-500 transition group-hover:text-[#00f0ff]">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className="mt-1 block font-display text-xl font-bold text-white">
-                    {year}
-                  </span>
-                  <span className="mt-1 block font-mono text-[10px] text-slate-500">
-                    {pastEventsByYear[year].length} events
-                  </span>
-                </a>
-              ))}
-            </div>
-          </aside>
-
-          <div className="space-y-12">
-            {pastYears.map((year) => (
-              <section
-                key={year}
-                id={`year-${year}`}
-                data-year={year}
-                className="scroll-mt-28"
-              >
-                <div className="mb-5 flex items-center gap-3">
-                  <span className="text-3xl font-bold text-white font-display">{year}</span>
-                  <span className="h-px flex-1 bg-gradient-to-r from-[#ff6b00]/40 to-transparent" />
+            {upcomingEvents.length === 0 && pastEvents.length === 0 ? (
+              <div className="rounded-2xl border border-white/10 bg-[#0d111c]/65 px-6 py-16 text-center backdrop-blur-xl my-10">
+                <div className="w-16 h-16 mx-auto bg-white/5 rounded-full flex items-center justify-center mb-4 border border-white/10">
+                  <span className="text-2xl opacity-80">👀</span>
                 </div>
-                <EventGrid eventList={pastEventsByYear[year]} variant="past" />
-              </section>
-            ))}
-          </div>
-        </div>
+                <h3 className="text-xl font-display font-bold text-white mb-2">
+                  No {category !== 'all' ? category : 'Events'} Found
+                </h3>
+                <p className="text-slate-400">
+                  We don't have any {category !== 'all' ? category.toLowerCase() : 'events'} to show here right now. Check back later!
+                </p>
+              </div>
+            ) : (
+              <>
+                {/* Upcoming Section */}
+                {upcomingEvents.length > 0 && (
+                  <div className="upcoming-backdrop-wash my-10 p-6 sm:p-10 relative">
+                    <p className="section-kicker mb-6">
+                      UPCOMING EVENTS
+                    </p>
+                    <EventGrid eventList={upcomingEvents} variant="upcoming" />
+                  </div>
+                )}
+
+                {/* Divider (only if both upcoming and past exist) */}
+                {upcomingEvents.length > 0 && pastEvents.length > 0 && (
+                  <div className="h-px bg-gradient-to-r from-transparent via-[#ff6b00]/30 to-transparent my-16" />
+                )}
+
+                {/* Past Events Section */}
+                {pastEvents.length > 0 && (
+                  <>
+                    <div className="my-10 flex items-center justify-between gap-4">
+                      <p className="section-kicker">
+                        PAST EVENTS
+                      </p>
+                    </div>
+
+                    <div className="grid gap-8 lg:grid-cols-[140px_1fr] items-start">
+                      <aside className="year-rail sticky top-20 z-30 self-start lg:top-24">
+                        <div className="year-rail-shell flex gap-2 overflow-x-auto rounded-2xl border border-white/15 bg-[#0d111c]/90 p-2 shadow-2xl backdrop-blur-2xl lg:max-h-[75vh] lg:flex-col lg:overflow-y-auto">
+                          {pastYears.map((year, index) => (
+                            <a
+                              key={year}
+                              href={`#year-${year}`}
+                              className={`year-jump group shrink-0 rounded-xl border px-4 py-3 text-left transition duration-300 lg:px-3 ${
+                                activeYear === year ? "is-active" : ""
+                              }`}
+                              style={{ "--year-index": index }}
+                              aria-current={activeYear === year ? "true" : undefined}
+                            >
+                              <span className="block font-mono text-[10px] uppercase text-slate-500 transition group-hover:text-[#00f0ff]">
+                                {String(index + 1).padStart(2, "0")}
+                              </span>
+                              <span className="mt-1 block font-display text-xl font-bold text-white">
+                                {year}
+                              </span>
+                              <span className="mt-1 block font-mono text-[10px] text-slate-500">
+                                {pastEventsByYear[year].length} events
+                              </span>
+                            </a>
+                          ))}
+                        </div>
+                      </aside>
+
+                      <div className="space-y-12">
+                        {pastYears.map((year) => (
+                          <section
+                            key={year}
+                            id={`year-${year}`}
+                            data-year={year}
+                            className="scroll-mt-28"
+                          >
+                            <div className="mb-5 flex items-center gap-3">
+                              <span className="text-3xl font-bold text-white font-display">{year}</span>
+                              <span className="h-px flex-1 bg-gradient-to-r from-[#ff6b00]/40 to-transparent" />
+                            </div>
+                            <EventGrid eventList={pastEventsByYear[year]} variant="past" />
+                          </section>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
+              </>
+            )}
           </>
         )}
 

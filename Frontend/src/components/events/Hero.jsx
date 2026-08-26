@@ -26,15 +26,11 @@ export default function HeroSection() {
 
   return (
     <section>
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-4 pt-4 sm:pt-6">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-4 pt-12 sm:pt-16">
         <div className="grid grid-cols-1 items-end gap-8 lg:grid-cols-12">
 
           {/* LEFT SIDE */}
           <div className="space-y-4 lg:col-span-7">
-            <div className="section-badge inline-flex items-center gap-2">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-[#ff6b00]" />
-              GEEK ROOM JIMS
-            </div>
 
             <h1 className="hero-title-premium block font-display text-4xl font-extrabold sm:text-6xl">
               <span className="hero-title-word">Events</span>

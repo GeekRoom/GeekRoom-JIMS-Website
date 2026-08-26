@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import PublicLayout from "./components/layouts/PublicLayout";
 import AdminLayout from "./components/layouts/AdminLayout";
 
@@ -8,17 +9,24 @@ import {
   AboutPage,
   HighlightsPage,
   ContactPage,
-  AchievementsPage,
 } from "./pages";
 
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminEvents from "./pages/admin/AdminEvents";
 import AdminTeamHeads from "./pages/admin/AdminTeamHeads";
-import AdminAchievements from "./pages/admin/AdminAchievements";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 
 export default function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         {/* Public Routes */}
         <Route element={<PublicLayout />}>
@@ -27,7 +35,6 @@ export default function App() {
           <Route path="/events" element={<EventsPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/highlights" element={<HighlightsPage />} />
-          <Route path="/achievements" element={<AchievementsPage />} />
           <Route path="/contact" element={<ContactPage />} />
         </Route>
 
@@ -36,7 +43,6 @@ export default function App() {
           <Route index element={<AdminDashboard />} />
           <Route path="events" element={<AdminEvents />} />
           <Route path="team-heads" element={<AdminTeamHeads />} />
-          <Route path="achievements" element={<AdminAchievements />} />
         </Route>
 
         {/* Fallback */}

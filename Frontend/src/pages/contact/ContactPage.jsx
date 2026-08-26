@@ -9,17 +9,14 @@ const contactItems = [
     icon: MapPin,
     title: "Address",
     text: "Jagan Institute of Management Studies, Rohini Sector-5, New Delhi",
+    link: "https://www.google.com/maps/search/?api=1&query=Jagan+Institute+of+Management+Studies,+Rohini+Sector-5,+New+Delhi"
   },
   {
     icon: Mail,
     title: "Email",
-    text: "geekroomjims@gmail.com",
-  },
-  {
-    icon: Clock,
-    title: "Office Hours",
-    text: "Monday to Friday, 8:00 AM - 7:00 PM",
-  },
+    text: "geekroomjims@jimsindia.org",
+    link: "https://mail.google.com/mail/?view=cm&fs=1&to=geekroomjims@jimsindia.org"
+  }
 ];
 
 function ContactPage() {
@@ -40,7 +37,7 @@ function ContactPage() {
       setStatus({ loading: false, success: true, error: "" });
       setFormData({ name: "", email: "", subject: "", message: "" });
       setTimeout(() => setStatus(prev => ({ ...prev, success: false })), 5000);
-    } catch (err) {
+    } catch {
       setStatus({ loading: false, success: false, error: "Failed to send message. Please try again later." });
     }
   };
@@ -110,14 +107,16 @@ function ContactPage() {
           </form>
 
           <aside className="contact-details" aria-label="Contact information">
-            {contactItems.map(({ icon: Icon, title, text }) => (
+            {contactItems.map(({ icon: Icon, title, text, link }) => (
               <article className="contact-row" key={title}>
                 <span className="icon-box">
                   <Icon aria-hidden="true" />
                 </span>
                 <div>
                   <h3>{title}</h3>
-                  <p>{text}</p>
+                  <a href={link} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.3s' }} onMouseEnter={(e) => e.target.style.color = 'var(--orange-primary)'} onMouseLeave={(e) => e.target.style.color = 'inherit'}>
+                    <p style={{ margin: 0 }}>{text}</p>
+                  </a>
                 </div>
               </article>
             ))}

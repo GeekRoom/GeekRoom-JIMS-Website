@@ -5,7 +5,7 @@ import EventsSection from "../../components/events/EventsSection";
 
 export default function EventsPage() {
   return (
-    <div className="min-h-screen relative text-[#f8fafc] bg-transparent pt-14 sm:pt-16">
+    <div className="min-h-screen relative text-[#f8fafc] bg-transparent pt-32 sm:pt-40">
       <main className="relative z-10">
         <Hero />
         <EventsSection />
