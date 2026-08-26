@@ -18,12 +18,18 @@ const handleResponse = async (response) => {
 
 export const api = {
     get: async (endpoint) => {
-        const response = await fetch(`${API_BASE_URL}${endpoint}`);
+        const token = localStorage.getItem('adminToken');
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+        
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, { headers });
         return handleResponse(response);
     },
 
     post: async (endpoint, data, isFormData = false) => {
+        const token = localStorage.getItem('adminToken');
         const headers = isFormData ? {} : { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+        
         const body = isFormData ? data : JSON.stringify(data);
 
         const response = await fetch(`${API_BASE_URL}${endpoint}`, {
@@ -36,7 +42,10 @@ export const api = {
     },
 
     put: async (endpoint, data, isFormData = false) => {
+        const token = localStorage.getItem('adminToken');
         const headers = isFormData ? {} : { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+        
         const body = isFormData ? data : JSON.stringify(data);
 
         const response = await fetch(`${API_BASE_URL}${endpoint}`, {
@@ -49,8 +58,12 @@ export const api = {
     },
 
     delete: async (endpoint) => {
+        const token = localStorage.getItem('adminToken');
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+        
         const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers
         });
 
         return handleResponse(response);

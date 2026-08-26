@@ -23,6 +23,10 @@ const teamheadsschema = mongoose.Schema({
     image: {
         type: String,
         trim: true
+    },
+    linkedin: {
+        type: String,
+        trim: true
     }
 }, { timestamps: true });
 

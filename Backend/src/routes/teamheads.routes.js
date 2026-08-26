@@ -7,6 +7,7 @@ const {
     updateTeamHead,
     deleteTeamHead
 } = require('../controllers/teamheads.controller');
+const authMiddleware = require('../middleware/auth.middleware');
 
 const router = express.Router();
 
@@ -24,11 +25,11 @@ const upload = multer({
     }
 });
 
-router.post('/create_team_head', upload.single('image'), createTeamHead);
+router.post('/create_team_head', authMiddleware, upload.single('image'), createTeamHead);
 router.get('/get_team_heads', getAllTeamHeads);
 router.get('/get_team_head/:id', getTeamHeadById);
-router.put('/update_team_head/:id', upload.single('image'), updateTeamHead);
-router.delete('/delete_team_head/:id', deleteTeamHead);
+router.put('/update_team_head/:id', authMiddleware, upload.single('image'), updateTeamHead);
+router.delete('/delete_team_head/:id', authMiddleware, deleteTeamHead);
 
 
 module.exports = router;

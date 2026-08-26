@@ -7,6 +7,7 @@ const {
     updateEvent,
     deleteEvent
 } = require('../controllers/events.controller');
+const authMiddleware = require('../middleware/auth.middleware');
 
 const router = express.Router();
 
@@ -30,10 +31,10 @@ const uploadEventImages = upload.fields([
     { name: 'image_gallery[]', maxCount: 10 }
 ]);
 
-router.post('/create_event', uploadEventImages, createEvent);
+router.post('/create_event', authMiddleware, uploadEventImages, createEvent);
 router.get('/get_events', getAllEvents);
 router.get('/get_event/:id', getEventById);
-router.put('/update_event/:id', uploadEventImages, updateEvent);
-router.delete('/delete_event/:id', deleteEvent);
+router.put('/update_event/:id', authMiddleware, uploadEventImages, updateEvent);
+router.delete('/delete_event/:id', authMiddleware, deleteEvent);
 
 module.exports = router;

@@ -16,6 +16,7 @@ import {
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminEvents from "./pages/admin/AdminEvents";
 import AdminTeamHeads from "./pages/admin/AdminTeamHeads";
+import AdminLogin from "./pages/admin/AdminLogin";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -24,6 +25,14 @@ function ScrollToTop() {
   }, [pathname]);
   return null;
 }
+
+const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem('adminToken');
+  if (!token) {
+    return <Navigate to="/admin/login" replace />;
+  }
+  return children;
+};
 
 export default function App() {
   return (
@@ -43,7 +52,13 @@ export default function App() {
         </Route>
 
         {/* Admin Routes */}
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin/login" element={<AdminLogin />} />
+        
+        <Route path="/admin" element={
+          <ProtectedRoute>
+            <AdminLayout />
+          </ProtectedRoute>
+        }>
           <Route index element={<AdminDashboard />} />
           <Route path="events" element={<AdminEvents />} />
           <Route path="team-heads" element={<AdminTeamHeads />} />

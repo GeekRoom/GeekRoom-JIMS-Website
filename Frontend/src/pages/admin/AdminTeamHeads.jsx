@@ -7,7 +7,7 @@ export default function AdminTeamHeads() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
-    name: '', department: '', ispresident: 'no'
+    name: '', department: '', ispresident: 'no', linkedin: ''
   });
   const [imageFile, setImageFile] = useState(null);
   const fileInputRef = useRef(null);
@@ -49,7 +49,8 @@ export default function AdminTeamHeads() {
     setFormData({
       name: person.name || '',
       department: person.department || '',
-      ispresident: person.ispresident || 'no'
+      ispresident: person.ispresident || 'no',
+      linkedin: person.linkedin || ''
     });
     setIsModalOpen(true);
   };
@@ -73,7 +74,7 @@ export default function AdminTeamHeads() {
       setIsModalOpen(false);
       setImageFile(null);
       setEditingId(null);
-      setFormData({ name: '', department: '', ispresident: 'no' });
+      setFormData({ name: '', department: '', ispresident: 'no', linkedin: '' });
       fetchTeamHeads();
     } catch (error) {
       console.error(error);
@@ -100,7 +101,7 @@ export default function AdminTeamHeads() {
         <button onClick={() => {
           setEditingId(null);
           setImageFile(null);
-          setFormData({ name: '', department: '', ispresident: 'no' });
+          setFormData({ name: '', department: '', ispresident: 'no', linkedin: '' });
           setIsModalOpen(true);
         }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
           <Plus size={20} /> Add Team Head
@@ -163,7 +164,7 @@ export default function AdminTeamHeads() {
           <div className="bg-gray-800 rounded-xl border border-gray-700 w-full max-w-lg">
             <div className="flex justify-between items-center p-6 border-b border-gray-700">
               <h3 className="text-xl font-bold text-gray-100">{editingId ? 'Edit Team Head' : 'Add Team Head'}</h3>
-              <button onClick={() => { setIsModalOpen(false); setEditingId(null); setImageFile(null); setFormData({ name: '', department: '', ispresident: 'no' }); }} className="text-gray-400 hover:text-white transition-colors"><X size={24} /></button>
+              <button onClick={() => { setIsModalOpen(false); setEditingId(null); setImageFile(null); setFormData({ name: '', department: '', ispresident: 'no', linkedin: '' }); }} className="text-gray-400 hover:text-white transition-colors"><X size={24} /></button>
             </div>
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
@@ -193,6 +194,10 @@ export default function AdminTeamHeads() {
                 </div>
               )}
               <div>
+                <label className="block text-sm text-gray-400 mb-1">LinkedIn URL</label>
+                <input name="linkedin" value={formData.linkedin} onChange={handleInputChange} placeholder="https://linkedin.com/in/username" className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white" />
+              </div>
+              <div>
                 <label className="block text-sm text-gray-400 mb-1">Photo</label>
                 <div className="flex items-center gap-2">
                   <input type="file" ref={fileInputRef} accept="image/*" onChange={handleFileChange} className="flex-1 w-full bg-gray-700 border border-gray-600 rounded p-2 text-gray-300" />
@@ -205,7 +210,7 @@ export default function AdminTeamHeads() {
               </div>
 
               <div className="flex justify-end gap-3 pt-4 mt-6">
-                <button type="button" onClick={() => { setIsModalOpen(false); setEditingId(null); setImageFile(null); setFormData({ name: '', department: '', ispresident: 'no' }); }} className="px-4 py-2 rounded text-gray-300 hover:bg-gray-700">Cancel</button>
+                <button type="button" onClick={() => { setIsModalOpen(false); setEditingId(null); setImageFile(null); setFormData({ name: '', department: '', ispresident: 'no', linkedin: '' }); }} className="px-4 py-2 rounded text-gray-300 hover:bg-gray-700">Cancel</button>
                 <button type="submit" className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white">{editingId ? 'Update' : 'Save'}</button>
               </div>
             </form>

@@ -3,18 +3,18 @@ const cors = require('cors');
 const multer = require('multer');
 const eventRoutes = require('./routes/events.routes');
 const teamHeadRoutes = require('./routes/teamheads.routes');
-
 const contactRoutes = require('./routes/contact.routes');
+const authRoutes = require('./routes/auth.routes');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-
 app.use('/api/events', eventRoutes);
 app.use('/api/team-heads', teamHeadRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/auth', authRoutes);
 
 app.use((req, res) => {
     res.status(404).json({

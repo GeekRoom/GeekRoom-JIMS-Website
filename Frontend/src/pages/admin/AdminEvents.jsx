@@ -13,6 +13,8 @@ export default function AdminEvents() {
   });
   const [imageFile, setImageFile] = useState(null);
   const fileInputRef = useRef(null);
+  const [imageGalleryFiles, setImageGalleryFiles] = useState([]);
+  const galleryInputRef = useRef(null);
   const [editingId, setEditingId] = useState(null);
 
   const fetchEvents = async () => {
@@ -86,6 +88,11 @@ export default function AdminEvents() {
     if (imageFile) {
       data.append('image', imageFile);
     }
+    if (imageGalleryFiles.length > 0) {
+      imageGalleryFiles.forEach((file) => {
+        data.append('image_gallery', file);
+      });
+    }
 
     try {
       if (editingId) {
@@ -95,6 +102,7 @@ export default function AdminEvents() {
       }
       setIsModalOpen(false);
       setImageFile(null);
+      setImageGalleryFiles([]);
       setEditingId(null);
       setFormData({ title: '', description: '', date: '', venue: '', category: '', status: 'past', format: 'offline', registration_link: '', registration_deadline: '' });
       fetchEvents();
@@ -137,6 +145,7 @@ export default function AdminEvents() {
           <button onClick={() => {
             setEditingId(null);
             setImageFile(null);
+            setImageGalleryFiles([]);
             setFormData({ title: '', description: '', date: '', venue: '', category: '', status: 'past', format: 'offline', registration_link: '', registration_deadline: '' });
             setIsModalOpen(true);
           }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
@@ -203,7 +212,7 @@ export default function AdminEvents() {
           <div className="bg-gray-800 rounded-xl border border-gray-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center p-6 border-b border-gray-700 sticky top-0 bg-gray-800 z-10">
               <h3 className="text-xl font-bold text-gray-100">{editingId ? 'Edit Event' : 'Create New Event'}</h3>
-              <button onClick={() => { setIsModalOpen(false); setEditingId(null); setImageFile(null); setFormData({ title: '', description: '', date: '', venue: '', category: '', status: 'past', format: 'offline', registration_link: '', registration_deadline: '' }); }} className="text-gray-400 hover:text-white transition-colors"><X size={24} /></button>
+              <button onClick={() => { setIsModalOpen(false); setEditingId(null); setImageFile(null); setImageGalleryFiles([]); setFormData({ title: '', description: '', date: '', venue: '', category: '', status: 'past', format: 'offline', registration_link: '', registration_deadline: '' }); }} className="text-gray-400 hover:text-white transition-colors"><X size={24} /></button>
             </div>
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
@@ -276,8 +285,21 @@ export default function AdminEvents() {
                 </div>
               </div>
 
+              <div>
+                <label className="block text-sm text-gray-400 mb-1">Image Gallery (Multiple Photos)</label>
+                <div className="flex items-center gap-2">
+                  <input type="file" multiple ref={galleryInputRef} accept="image/*" onChange={(e) => setImageGalleryFiles(Array.from(e.target.files))} className="flex-1 w-full bg-gray-700 border border-gray-600 rounded p-2 text-gray-300" />
+                  {imageGalleryFiles.length > 0 && (
+                    <button type="button" onClick={() => { setImageGalleryFiles([]); if (galleryInputRef.current) galleryInputRef.current.value = ''; }} className="p-2 bg-red-500/20 text-red-400 hover:bg-red-500/30 rounded transition-colors" title="Remove all gallery images">
+                      <X size={24} />
+                    </button>
+                  )}
+                </div>
+                {imageGalleryFiles.length > 0 && <p className="text-sm text-gray-400 mt-1">{imageGalleryFiles.length} images selected</p>}
+              </div>
+
               <div className="flex justify-end gap-3 pt-4 border-t border-gray-700 mt-6">
-                <button type="button" onClick={() => { setIsModalOpen(false); setEditingId(null); setImageFile(null); setFormData({ title: '', description: '', date: '', venue: '', category: '', status: 'past', format: 'offline', registration_link: '', registration_deadline: '' }); }} className="px-4 py-2 rounded text-gray-300 hover:bg-gray-700">Cancel</button>
+                <button type="button" onClick={() => { setIsModalOpen(false); setEditingId(null); setImageFile(null); setImageGalleryFiles([]); setFormData({ title: '', description: '', date: '', venue: '', category: '', status: 'past', format: 'offline', registration_link: '', registration_deadline: '' }); }} className="px-4 py-2 rounded text-gray-300 hover:bg-gray-700">Cancel</button>
                 <button type="submit" className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white">{editingId ? 'Update Event' : 'Save Event'}</button>
               </div>
             </form>

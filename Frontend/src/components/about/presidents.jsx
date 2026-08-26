@@ -17,7 +17,7 @@ export default function Presidents() {
             name: h.name,
             role: 'President / Core',
             img: h.image,
-            linkedin: '#'
+            linkedin: h.linkedin || '#'
           }));
         setPresidents(filtered);
       } catch (error) {

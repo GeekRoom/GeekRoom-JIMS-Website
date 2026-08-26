@@ -23,7 +23,7 @@ export default function DepartmentHeads() {
             name: h.name,
             role: h.department || 'Head',
             img: h.image,
-            linkedin: '#'
+            linkedin: h.linkedin || '#'
           }));
         setHeadsData(filtered);
       } catch (error) {
@@ -50,53 +50,37 @@ export default function DepartmentHeads() {
     return () => window.removeEventListener('resize', updateVisible);
   }, []);
 
-  // Build repeated list for seamless infinite looping (divisible by 6 to support 1, 2, and 3 cards per view)
-  let baseList = [...headsData];
-  if (baseList.length > 0) {
-    while (baseList.length < 6 || baseList.length % 6 !== 0) {
-      baseList = [...baseList, ...headsData];
-    }
-  }
-  const N = baseList.length;
-  const displayList = N > 0 ? [...baseList, ...baseList, ...baseList] : [];
+  const maxIndex = Math.max(0, headsData.length - itemsVisible);
+  const displayList = headsData;
 
-  // Initialize currentIndex to middle set (N)
   useEffect(() => {
-    if (N > 0) {
-      setCurrentIndex(N);
-      setIsTransitioning(false);
+    if (currentIndex > maxIndex) {
+      setCurrentIndex(maxIndex);
     }
-  }, [N]);
+  }, [maxIndex, currentIndex]);
 
-  // Auto-swipe every 3.5 seconds in a group of cards (pauses on hover or touch)
+  // Auto-swipe every 5 seconds
   useEffect(() => {
-    if (isPaused || N === 0) return;
+    if (isPaused || maxIndex === 0) return;
     const timer = setInterval(() => {
       setIsTransitioning(true);
-      setCurrentIndex(prev => prev + itemsVisible);
-    }, 3500);
+      setCurrentIndex(prev => {
+        if (prev >= maxIndex) return 0;
+        return Math.min(prev + itemsVisible, maxIndex);
+      });
+    }, 5000);
 
     return () => clearInterval(timer);
-  }, [isPaused, N, itemsVisible]);
+  }, [isPaused, maxIndex, itemsVisible]);
 
   const handlePrev = () => {
     setIsTransitioning(true);
-    setCurrentIndex(prev => prev - itemsVisible);
+    setCurrentIndex(prev => Math.max(0, prev - itemsVisible));
   };
 
   const handleNext = () => {
     setIsTransitioning(true);
-    setCurrentIndex(prev => prev + itemsVisible);
-  };
-
-  const handleTransitionEnd = () => {
-    if (currentIndex >= 2 * N) {
-      setIsTransitioning(false);
-      setCurrentIndex(currentIndex - N);
-    } else if (currentIndex < N) {
-      setIsTransitioning(false);
-      setCurrentIndex(currentIndex + N);
-    }
+    setCurrentIndex(prev => Math.min(maxIndex, prev + itemsVisible));
   };
 
   const handleTouchStart = (e) => {
@@ -134,7 +118,7 @@ export default function DepartmentHeads() {
 
   const transformStyle = {
     transform: `translateX(calc(-${currentIndex} * (100% + 1.25rem) / ${itemsVisible}))`,
-    transition: isTransitioning ? 'transform 500ms cubic-bezier(0.25, 1, 0.5, 1)' : 'none',
+    transition: isTransitioning ? 'transform 800ms cubic-bezier(0.25, 1, 0.5, 1)' : 'none',
   };
 
   return (
@@ -151,24 +135,28 @@ export default function DepartmentHeads() {
       {/* Carousel Container with Side Navigation Buttons */}
       <div className="relative">
         {/* Previous Button (Left Side) */}
-        <button
-          type="button"
-          onClick={handlePrev}
-          className="absolute -left-4 sm:-left-6 md:-left-8 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-[#0a0d18]/85 text-white shadow-[0_4px_25px_rgba(0,0,0,0.7)] backdrop-blur-md transition-all duration-300 hover:border-[#ff6b00] hover:bg-[#ff6b00]/20 hover:text-[#ff6b00] hover:scale-110 active:scale-95 cursor-pointer"
-          aria-label="Previous department heads"
-        >
-          <ChevronLeft size={22} />
-        </button>
+        {maxIndex > 0 && currentIndex > 0 && (
+          <button
+            type="button"
+            onClick={handlePrev}
+            className="absolute -left-4 sm:-left-6 md:-left-8 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-[#0a0d18]/85 text-white shadow-[0_4px_25px_rgba(0,0,0,0.7)] backdrop-blur-md transition-all duration-300 hover:border-[#ff6b00] hover:bg-[#ff6b00]/20 hover:text-[#ff6b00] hover:scale-110 active:scale-95 cursor-pointer"
+            aria-label="Previous department heads"
+          >
+            <ChevronLeft size={22} />
+          </button>
+        )}
 
         {/* Next Button (Right Side) */}
-        <button
-          type="button"
-          onClick={handleNext}
-          className="absolute -right-4 sm:-right-6 md:-right-8 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-[#0a0d18]/85 text-white shadow-[0_4px_25px_rgba(0,0,0,0.7)] backdrop-blur-md transition-all duration-300 hover:border-[#ff6b00] hover:bg-[#ff6b00]/20 hover:text-[#ff6b00] hover:scale-110 active:scale-95 cursor-pointer"
-          aria-label="Next department heads"
-        >
-          <ChevronRight size={22} />
-        </button>
+        {maxIndex > 0 && currentIndex < maxIndex && (
+          <button
+            type="button"
+            onClick={handleNext}
+            className="absolute -right-4 sm:-right-6 md:-right-8 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-[#0a0d18]/85 text-white shadow-[0_4px_25px_rgba(0,0,0,0.7)] backdrop-blur-md transition-all duration-300 hover:border-[#ff6b00] hover:bg-[#ff6b00]/20 hover:text-[#ff6b00] hover:scale-110 active:scale-95 cursor-pointer"
+            aria-label="Next department heads"
+          >
+            <ChevronRight size={22} />
+          </button>
+        )}
 
         {/* Infinite Carousel Container */}
         <div
@@ -179,9 +167,8 @@ export default function DepartmentHeads() {
           onTouchEnd={handleTouchEnd}
         >
           <div
-            className="flex gap-5 will-change-transform py-3"
+            className={`flex gap-5 will-change-transform py-3 ${maxIndex === 0 ? 'justify-center' : ''}`}
             style={transformStyle}
-            onTransitionEnd={handleTransitionEnd}
           >
             {displayList.map((member, i) => (
               <div key={i} style={getCardStyle()}>
