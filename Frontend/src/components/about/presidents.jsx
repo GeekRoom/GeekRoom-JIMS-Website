@@ -37,9 +37,11 @@ export default function Presidents() {
 
   return (
     <div className="mb-16">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+      <div className="flex flex-wrap justify-center gap-5 sm:gap-6 max-w-3xl mx-auto">
         {presidents.map((member, i) => (
-          <TeamMemberCard key={i} member={member} />
+          <div key={i} className="w-[240px] sm:w-[260px]">
+            <TeamMemberCard member={member} />
+          </div>
         ))}
       </div>
     </div>

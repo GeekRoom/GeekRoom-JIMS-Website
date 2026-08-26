@@ -4,9 +4,13 @@ import TeamMemberCard from './card';
 import { api } from '../../utils/api';
 
 export default function DepartmentHeads() {
-  const scrollRef = useRef(null);
   const [headsData, setHeadsData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(true);
+  const [itemsVisible, setItemsVisible] = useState(3);
+  const [touchStartX, setTouchStartX] = useState(null);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
     const fetchHeads = async () => {
@@ -31,16 +35,85 @@ export default function DepartmentHeads() {
     fetchHeads();
   }, []);
 
-  const scrollLeft = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -310, behavior: 'smooth' });
+  useEffect(() => {
+    const updateVisible = () => {
+      if (window.innerWidth < 640) {
+        setItemsVisible(1);
+      } else if (window.innerWidth < 1024) {
+        setItemsVisible(2);
+      } else {
+        setItemsVisible(3);
+      }
+    };
+    updateVisible();
+    window.addEventListener('resize', updateVisible);
+    return () => window.removeEventListener('resize', updateVisible);
+  }, []);
+
+  // Build repeated list for seamless infinite looping (divisible by 6 to support 1, 2, and 3 cards per view)
+  let baseList = [...headsData];
+  if (baseList.length > 0) {
+    while (baseList.length < 6 || baseList.length % 6 !== 0) {
+      baseList = [...baseList, ...headsData];
+    }
+  }
+  const N = baseList.length;
+  const displayList = N > 0 ? [...baseList, ...baseList, ...baseList] : [];
+
+  // Initialize currentIndex to middle set (N)
+  useEffect(() => {
+    if (N > 0) {
+      setCurrentIndex(N);
+      setIsTransitioning(false);
+    }
+  }, [N]);
+
+  // Auto-swipe every 3.5 seconds in a group of cards (pauses on hover or touch)
+  useEffect(() => {
+    if (isPaused || N === 0) return;
+    const timer = setInterval(() => {
+      setIsTransitioning(true);
+      setCurrentIndex(prev => prev + itemsVisible);
+    }, 3500);
+
+    return () => clearInterval(timer);
+  }, [isPaused, N, itemsVisible]);
+
+  const handlePrev = () => {
+    setIsTransitioning(true);
+    setCurrentIndex(prev => prev - itemsVisible);
+  };
+
+  const handleNext = () => {
+    setIsTransitioning(true);
+    setCurrentIndex(prev => prev + itemsVisible);
+  };
+
+  const handleTransitionEnd = () => {
+    if (currentIndex >= 2 * N) {
+      setIsTransitioning(false);
+      setCurrentIndex(currentIndex - N);
+    } else if (currentIndex < N) {
+      setIsTransitioning(false);
+      setCurrentIndex(currentIndex + N);
     }
   };
 
-  const scrollRight = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: 310, behavior: 'smooth' });
+  const handleTouchStart = (e) => {
+    setIsPaused(true);
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e) => {
+    setIsPaused(false);
+    if (touchStartX === null) return;
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (diff > 50) {
+      handleNext();
+    } else if (diff < -50) {
+      handlePrev();
     }
+    setTouchStartX(null);
   };
 
   if (loading) {
@@ -49,50 +122,74 @@ export default function DepartmentHeads() {
 
   if (headsData.length === 0) return null;
 
-  return (
-    <div className="mb-20 relative">
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h3 className="font-display font-bold text-2xl md:text-3xl text-white">
-            Department Heads
-          </h3>
-          <p className="font-mono text-xs text-[#00f0ff] uppercase tracking-wider mt-1">
-            {headsData.length} Heads • Scroll to explore
-          </p>
-        </div>
+  const getCardStyle = () => {
+    if (itemsVisible === 1) {
+      return { width: '100%', flexShrink: 0 };
+    }
+    if (itemsVisible === 2) {
+      return { width: 'calc((100% - 1.25rem) / 2)', flexShrink: 0 };
+    }
+    return { width: 'calc((100% - 2.5rem) / 3)', flexShrink: 0 };
+  };
 
-        {/* Previous & Next Navigation Buttons */}
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={scrollLeft}
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-[#0a0d18]/80 text-white backdrop-blur-md transition-all duration-300 hover:border-[#ff6b00] hover:bg-[#ff6b00]/15 hover:text-[#ff6b00] active:scale-95"
-            aria-label="Scroll left department heads"
-          >
-            <ChevronLeft size={20} />
-          </button>
-          <button
-            type="button"
-            onClick={scrollRight}
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-[#0a0d18]/80 text-white backdrop-blur-md transition-all duration-300 hover:border-[#ff6b00] hover:bg-[#ff6b00]/15 hover:text-[#ff6b00] active:scale-95"
-            aria-label="Scroll right department heads"
-          >
-            <ChevronRight size={20} />
-          </button>
-        </div>
+  const transformStyle = {
+    transform: `translateX(calc(-${currentIndex} * (100% + 1.25rem) / ${itemsVisible}))`,
+    transition: isTransitioning ? 'transform 500ms cubic-bezier(0.25, 1, 0.5, 1)' : 'none',
+  };
+
+  return (
+    <div className="mb-20 relative max-w-4xl mx-auto">
+      <div className="mb-6">
+        <h3 className="font-display font-bold text-2xl md:text-3xl text-white">
+          Department Heads
+        </h3>
+        <p className="font-mono text-xs text-[#00f0ff] uppercase tracking-wider mt-1">
+          {headsData.length} Heads
+        </p>
       </div>
 
-      {/* Horizontal Scrollable Carousel */}
-      <div
-        ref={scrollRef}
-        className="flex gap-6 overflow-x-auto pb-4 pt-1 scrollbar-none snap-x snap-mandatory scroll-smooth"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-      >
-        {headsData.map((member, i) => (
-          <div key={i} className="w-[270px] sm:w-[290px] shrink-0 snap-start">
-            <TeamMemberCard member={member} />
+      {/* Carousel Container with Side Navigation Buttons */}
+      <div className="relative">
+        {/* Previous Button (Left Side) */}
+        <button
+          type="button"
+          onClick={handlePrev}
+          className="absolute -left-4 sm:-left-6 md:-left-8 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-[#0a0d18]/85 text-white shadow-[0_4px_25px_rgba(0,0,0,0.7)] backdrop-blur-md transition-all duration-300 hover:border-[#ff6b00] hover:bg-[#ff6b00]/20 hover:text-[#ff6b00] hover:scale-110 active:scale-95 cursor-pointer"
+          aria-label="Previous department heads"
+        >
+          <ChevronLeft size={22} />
+        </button>
+
+        {/* Next Button (Right Side) */}
+        <button
+          type="button"
+          onClick={handleNext}
+          className="absolute -right-4 sm:-right-6 md:-right-8 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-[#0a0d18]/85 text-white shadow-[0_4px_25px_rgba(0,0,0,0.7)] backdrop-blur-md transition-all duration-300 hover:border-[#ff6b00] hover:bg-[#ff6b00]/20 hover:text-[#ff6b00] hover:scale-110 active:scale-95 cursor-pointer"
+          aria-label="Next department heads"
+        >
+          <ChevronRight size={22} />
+        </button>
+
+        {/* Infinite Carousel Container */}
+        <div
+          className="w-full overflow-hidden pt-4 pb-8"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div
+            className="flex gap-5 will-change-transform py-3"
+            style={transformStyle}
+            onTransitionEnd={handleTransitionEnd}
+          >
+            {displayList.map((member, i) => (
+              <div key={i} style={getCardStyle()}>
+                <TeamMemberCard member={member} />
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );
