@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Hero() {
-  const [stats, setStats] = useState({ members: 0, events: 0, partners: 0, prize: 0 });
+  const [stats, setStats] = useState({ members: 0, events: 0, partners: 0 });
 
   useEffect(() => {
-    let current = { members: 0, events: 0, partners: 0, prize: 0 };
-    const targets = { members: 50, events: 5, partners: 10, prize: 2 };
+    let current = { members: 0, events: 0, partners: 0 };
+    const targets = { members: 100, events: 10, partners: 10 };
 
     const timer = setInterval(() => {
       let done = true;
       if (current.members < targets.members) {
-        current.members = Math.min(targets.members, current.members + 2);
+        current.members = Math.min(targets.members, current.members + 4);
         done = false;
       }
       if (current.events < targets.events) {
@@ -22,13 +22,9 @@ export default function Hero() {
         current.partners = Math.min(targets.partners, current.partners + 1);
         done = false;
       }
-      if (current.prize < targets.prize) {
-        current.prize = Math.min(targets.prize, current.prize + 1);
-        done = false;
-      }
       setStats({ ...current });
       if (done) clearInterval(timer);
-    }, 40);
+    }, 35);
 
     return () => clearInterval(timer);
   }, []);
@@ -40,7 +36,7 @@ export default function Hero() {
           <div className="pill-community-badge">
             <span className="badge-dot" />
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem' }}>
-              🚀 JIMS Official Tech Society • 50+ Active Members
+              🚀 Geekroom JIMS Official Tech Society
             </span>
           </div>
 
@@ -81,13 +77,6 @@ export default function Hero() {
                 {stats.partners}<span style={{ color: 'var(--orange-primary)' }}>+</span>
               </div>
               <div className="stat-label">Industry Partners</div>
-            </div>
-
-            <div className="glass-card stat-card">
-              <div className="stat-number">
-                ₹{stats.prize}<span style={{ color: 'var(--blue-cyan)' }}>L+</span>
-              </div>
-              <div className="stat-label">Prize Pool Won</div>
             </div>
           </div>
         </div>

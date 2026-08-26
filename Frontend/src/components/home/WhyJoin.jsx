@@ -16,11 +16,6 @@ export default function WhyJoin() {
       icon: 'fa-user-tie',
       title: 'Industry Mentorship',
       desc: 'Get 1-on-1 guidance, code reviews, and career roadmap sessions from senior engineers at top firms.'
-    },
-    {
-      icon: 'fa-network-wired',
-      title: 'Career & Referrals',
-      desc: 'Access exclusive internship pipelines, hackathon team matching, and resume review channels.'
     }
   ];
 
