@@ -1,16 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { api } from '../../utils/api';
-import { Trash2, Plus, X, Image as ImageIcon } from 'lucide-react';
+import { Trash2, Plus, X, Image as ImageIcon, Edit2 } from 'lucide-react';
 
 export default function AdminEvents() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [filterStatus, setFilterStatus] = useState('all');
   const [formData, setFormData] = useState({
     title: '', description: '', date: '', venue: '', category: '', 
     status: 'past', format: 'offline', registration_link: '', registration_deadline: ''
   });
   const [imageFile, setImageFile] = useState(null);
+  const fileInputRef = useRef(null);
+  const [editingId, setEditingId] = useState(null);
 
   const fetchEvents = async () => {
     try {
@@ -29,11 +32,49 @@ export default function AdminEvents() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    setFormData(prev => {
+      const newData = { ...prev, [name]: value };
+      
+      if (name === 'date' && value) {
+        const selectedDate = new Date(value);
+        selectedDate.setHours(0, 0, 0, 0);
+        
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        newData.status = selectedDate >= today ? 'upcoming' : 'past';
+      }
+      
+      return newData;
+    });
   };
 
   const handleFileChange = (e) => {
     setImageFile(e.target.files[0]);
+  };
+
+  const removeImage = () => {
+    setImageFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const handleEdit = (event) => {
+    setEditingId(event._id);
+    setFormData({
+      title: event.title || '',
+      description: event.description || '',
+      date: event.date ? new Date(event.date).toISOString().split('T')[0] : '',
+      venue: event.venue || '',
+      category: event.category || '',
+      status: event.status || 'past',
+      format: event.format || 'offline',
+      registration_link: event.registration_link || event.link || '',
+      registration_deadline: event.registration_deadline ? new Date(event.registration_deadline).toISOString().slice(0, 16) : ''
+    });
+    setIsModalOpen(true);
   };
 
   const handleSubmit = async (e) => {
@@ -47,15 +88,20 @@ export default function AdminEvents() {
     }
 
     try {
-      await api.post('/events/create_event', data, true);
+      if (editingId) {
+        await api.put(`/events/update_event/${editingId}`, data, true);
+      } else {
+        await api.post('/events/create_event', data, true);
+      }
       setIsModalOpen(false);
       setImageFile(null);
+      setEditingId(null);
       setFormData({ title: '', description: '', date: '', venue: '', category: '', status: 'past', format: 'offline', registration_link: '', registration_deadline: '' });
       fetchEvents();
     } catch (error) {
       console.error(error);
-      const msg = error.response?.data?.message || error.message || 'Failed to create event';
-      alert(`Failed to create event: ${msg}`);
+      const msg = error.response?.data?.message || error.message || (editingId ? 'Failed to update event' : 'Failed to create event');
+      alert(`${editingId ? 'Failed to update event' : 'Failed to create event'}: ${msg}`);
     }
   };
 
@@ -70,13 +116,33 @@ export default function AdminEvents() {
     }
   };
 
+  const filteredAndSortedEvents = events
+    .filter(event => filterStatus === 'all' ? true : event.status === filterStatus)
+    .sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date));
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-100">Events Management</h2>
-        <button onClick={() => setIsModalOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-          <Plus size={20} /> Create Event
-        </button>
+        <div className="flex gap-4">
+          <select 
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="bg-gray-800 border border-gray-700 text-white px-4 py-2 rounded-lg outline-none focus:border-blue-500 transition-colors"
+          >
+            <option value="all">All Events</option>
+            <option value="upcoming">Upcoming</option>
+            <option value="past">Past</option>
+          </select>
+          <button onClick={() => {
+            setEditingId(null);
+            setImageFile(null);
+            setFormData({ title: '', description: '', date: '', venue: '', category: '', status: 'past', format: 'offline', registration_link: '', registration_deadline: '' });
+            setIsModalOpen(true);
+          }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+            <Plus size={20} /> Create Event
+          </button>
+        </div>
       </div>
 
       <div className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
@@ -95,7 +161,7 @@ export default function AdminEvents() {
             <tbody>
               {loading ? (
                 <tr><td colSpan="6" className="p-4 text-center">Loading...</td></tr>
-              ) : events.map(event => (
+              ) : filteredAndSortedEvents.map(event => (
                 <tr key={event._id} className="border-b border-gray-700 hover:bg-gray-750">
                   <td className="p-4">
                     {event.image ? (
@@ -113,13 +179,18 @@ export default function AdminEvents() {
                     </span>
                   </td>
                   <td className="p-4">
-                    <button onClick={() => handleDelete(event._id)} className="text-red-400 hover:text-red-300 transition-colors p-1 bg-red-400/10 rounded">
-                      <Trash2 size={18} />
-                    </button>
+                    <div className="flex gap-2">
+                      <button onClick={() => handleEdit(event)} className="text-blue-400 hover:text-blue-300 transition-colors p-1 bg-blue-400/10 rounded">
+                        <Edit2 size={18} />
+                      </button>
+                      <button onClick={() => handleDelete(event._id)} className="text-red-400 hover:text-red-300 transition-colors p-1 bg-red-400/10 rounded">
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
-              {!loading && events.length === 0 && (
+              {!loading && filteredAndSortedEvents.length === 0 && (
                 <tr><td colSpan="6" className="p-4 text-center text-gray-500">No events found.</td></tr>
               )}
             </tbody>
@@ -131,8 +202,8 @@ export default function AdminEvents() {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-gray-800 rounded-xl border border-gray-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center p-6 border-b border-gray-700 sticky top-0 bg-gray-800 z-10">
-              <h3 className="text-xl font-bold text-gray-100">Create New Event</h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-white transition-colors"><X size={24} /></button>
+              <h3 className="text-xl font-bold text-gray-100">{editingId ? 'Edit Event' : 'Create New Event'}</h3>
+              <button onClick={() => { setIsModalOpen(false); setEditingId(null); setImageFile(null); setFormData({ title: '', description: '', date: '', venue: '', category: '', status: 'past', format: 'offline', registration_link: '', registration_deadline: '' }); }} className="text-gray-400 hover:text-white transition-colors"><X size={24} /></button>
             </div>
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
@@ -195,12 +266,19 @@ export default function AdminEvents() {
 
               <div>
                 <label className="block text-sm text-gray-400 mb-1">Cover Image</label>
-                <input type="file" accept="image/*" onChange={handleFileChange} className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-gray-300" />
+                <div className="flex items-center gap-2">
+                  <input type="file" ref={fileInputRef} accept="image/*" onChange={handleFileChange} className="flex-1 w-full bg-gray-700 border border-gray-600 rounded p-2 text-gray-300" />
+                  {imageFile && (
+                    <button type="button" onClick={removeImage} className="p-2 bg-red-500/20 text-red-400 hover:bg-red-500/30 rounded transition-colors" title="Remove image">
+                      <X size={24} />
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="flex justify-end gap-3 pt-4 border-t border-gray-700 mt-6">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 rounded text-gray-300 hover:bg-gray-700">Cancel</button>
-                <button type="submit" className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white">Save Event</button>
+                <button type="button" onClick={() => { setIsModalOpen(false); setEditingId(null); setImageFile(null); setFormData({ title: '', description: '', date: '', venue: '', category: '', status: 'past', format: 'offline', registration_link: '', registration_deadline: '' }); }} className="px-4 py-2 rounded text-gray-300 hover:bg-gray-700">Cancel</button>
+                <button type="submit" className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white">{editingId ? 'Update Event' : 'Save Event'}</button>
               </div>
             </form>
           </div>

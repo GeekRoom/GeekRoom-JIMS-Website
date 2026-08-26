@@ -8,7 +8,6 @@ export default function AdminLayout() {
     { name: "Dashboard", path: "/admin", icon: <LayoutDashboard size={20} /> },
     { name: "Events", path: "/admin/events", icon: <Calendar size={20} /> },
     { name: "Team Heads", path: "/admin/team-heads", icon: <Users size={20} /> },
-    { name: "Achievements", path: "/admin/achievements", icon: <Trophy size={20} /> },
   ];
 
   return (

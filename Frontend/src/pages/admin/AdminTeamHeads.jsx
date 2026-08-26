@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { api } from '../../utils/api';
-import { Trash2, Plus, X, User } from 'lucide-react';
+import { Trash2, Plus, X, User, Edit2 } from 'lucide-react';
 
 export default function AdminTeamHeads() {
   const [teamHeads, setTeamHeads] = useState([]);
@@ -10,6 +10,8 @@ export default function AdminTeamHeads() {
     name: '', department: '', ispresident: 'no'
   });
   const [imageFile, setImageFile] = useState(null);
+  const fileInputRef = useRef(null);
+  const [editingId, setEditingId] = useState(null);
 
   const fetchTeamHeads = async () => {
     try {
@@ -35,6 +37,23 @@ export default function AdminTeamHeads() {
     setImageFile(e.target.files[0]);
   };
 
+  const removeImage = () => {
+    setImageFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const handleEdit = (person) => {
+    setEditingId(person._id);
+    setFormData({
+      name: person.name || '',
+      department: person.department || '',
+      ispresident: person.ispresident || 'no'
+    });
+    setIsModalOpen(true);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -46,14 +65,20 @@ export default function AdminTeamHeads() {
     }
 
     try {
-      await api.post('/team-heads/create_team_head', data, true);
+      if (editingId) {
+        await api.put(`/team-heads/update_team_head/${editingId}`, data, true);
+      } else {
+        await api.post('/team-heads/create_team_head', data, true);
+      }
       setIsModalOpen(false);
       setImageFile(null);
+      setEditingId(null);
       setFormData({ name: '', department: '', ispresident: 'no' });
       fetchTeamHeads();
     } catch (error) {
       console.error(error);
-      alert('Failed to create team head');
+      const msg = error.response?.data?.message || error.message || (editingId ? 'Failed to update team head' : 'Failed to create team head');
+      alert(`${editingId ? 'Failed to update team head' : 'Failed to create team head'}: ${msg}`);
     }
   };
 
@@ -72,7 +97,12 @@ export default function AdminTeamHeads() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-100">Team Heads Management</h2>
-        <button onClick={() => setIsModalOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+        <button onClick={() => {
+          setEditingId(null);
+          setImageFile(null);
+          setFormData({ name: '', department: '', ispresident: 'no' });
+          setIsModalOpen(true);
+        }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
           <Plus size={20} /> Add Team Head
         </button>
       </div>
@@ -109,9 +139,14 @@ export default function AdminTeamHeads() {
                   </td>
                   <td className="p-4">{person.department || '-'}</td>
                   <td className="p-4">
-                    <button onClick={() => handleDelete(person._id)} className="text-red-400 hover:text-red-300 transition-colors p-1 bg-red-400/10 rounded">
-                      <Trash2 size={18} />
-                    </button>
+                    <div className="flex gap-2">
+                      <button onClick={() => handleEdit(person)} className="text-blue-400 hover:text-blue-300 transition-colors p-1 bg-blue-400/10 rounded">
+                        <Edit2 size={18} />
+                      </button>
+                      <button onClick={() => handleDelete(person._id)} className="text-red-400 hover:text-red-300 transition-colors p-1 bg-red-400/10 rounded">
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -127,8 +162,8 @@ export default function AdminTeamHeads() {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
           <div className="bg-gray-800 rounded-xl border border-gray-700 w-full max-w-lg">
             <div className="flex justify-between items-center p-6 border-b border-gray-700">
-              <h3 className="text-xl font-bold text-gray-100">Add Team Head</h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-white transition-colors"><X size={24} /></button>
+              <h3 className="text-xl font-bold text-gray-100">{editingId ? 'Edit Team Head' : 'Add Team Head'}</h3>
+              <button onClick={() => { setIsModalOpen(false); setEditingId(null); setImageFile(null); setFormData({ name: '', department: '', ispresident: 'no' }); }} className="text-gray-400 hover:text-white transition-colors"><X size={24} /></button>
             </div>
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
@@ -136,7 +171,7 @@ export default function AdminTeamHeads() {
                 <input required name="name" value={formData.name} onChange={handleInputChange} className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white" />
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-1">Is President/Core Team? *</label>
+                <label className="block text-sm text-gray-400 mb-1">Is President ? *</label>
                 <select name="ispresident" value={formData.ispresident} onChange={handleInputChange} className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white">
                   <option value="no">No</option>
                   <option value="yes">Yes</option>
@@ -145,17 +180,33 @@ export default function AdminTeamHeads() {
               {formData.ispresident === 'no' && (
                 <div>
                   <label className="block text-sm text-gray-400 mb-1">Department *</label>
-                  <input required name="department" value={formData.department} onChange={handleInputChange} className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white" />
+                  <select required name="department" value={formData.department} onChange={handleInputChange} className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white">
+                    <option value="">Select Department</option>
+                    <option value="Cyber Security">Cyber Security</option>
+                    <option value="AI/ML">AI/ML</option>
+                    <option value="Web Development">Web Development</option>
+                    <option value="Emerging Trends">Emerging Trends</option>
+                    <option value="Design">Design</option>
+                    <option value="Outreach">Outreach</option>
+                    <option value="DSA">DSA</option>
+                  </select>
                 </div>
               )}
               <div>
                 <label className="block text-sm text-gray-400 mb-1">Photo</label>
-                <input type="file" accept="image/*" onChange={handleFileChange} className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-gray-300" />
+                <div className="flex items-center gap-2">
+                  <input type="file" ref={fileInputRef} accept="image/*" onChange={handleFileChange} className="flex-1 w-full bg-gray-700 border border-gray-600 rounded p-2 text-gray-300" />
+                  {imageFile && (
+                    <button type="button" onClick={removeImage} className="p-2 bg-red-500/20 text-red-400 hover:bg-red-500/30 rounded transition-colors" title="Remove image">
+                      <X size={24} />
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="flex justify-end gap-3 pt-4 mt-6">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 rounded text-gray-300 hover:bg-gray-700">Cancel</button>
-                <button type="submit" className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white">Save</button>
+                <button type="button" onClick={() => { setIsModalOpen(false); setEditingId(null); setImageFile(null); setFormData({ name: '', department: '', ispresident: 'no' }); }} className="px-4 py-2 rounded text-gray-300 hover:bg-gray-700">Cancel</button>
+                <button type="submit" className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white">{editingId ? 'Update' : 'Save'}</button>
               </div>
             </form>
           </div>

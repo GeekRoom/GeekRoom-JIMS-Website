@@ -39,6 +39,18 @@ const formatEventResponse = (event) => {
             ? new Date() > new Date(eventData.registration_deadline)
             : false;
 
+        if (eventData.date) {
+            const eventDate = new Date(eventData.date);
+            eventDate.setHours(0, 0, 0, 0);
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (eventDate < today) {
+                eventData.status = 'past';
+            }
+        }
+
         return {
             ...eventData,
             is_registration_open: Boolean(eventData.link && eventData.link !== '#') && !hasDeadlinePassed,
