@@ -10,7 +10,7 @@
   z-index: 1;
   width: min(100% - 40px, 1416px);
   margin: 0 auto;
-  padding: 36px 0 72px;
+  padding: 0 0 72px;
 }
 
 .site-nav {
@@ -62,8 +62,8 @@
 }
 
 .hero-panel {
-  min-height: 374px;
-  padding: 84px 0 56px;
+  min-height: auto;
+  padding: 0 0 24px;
   display: grid;
   place-items: center;
   text-align: center;

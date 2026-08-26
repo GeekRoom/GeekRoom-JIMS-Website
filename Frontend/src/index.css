@@ -36,39 +36,115 @@ body {
   position: relative;
 }
 
+/* Global Typography Hierarchy Aligned to Home Page Proportions */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
+  color: #ffffff;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+h1, .hero-title, .hero-title-premium {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 5.8vw, 4.8rem);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+}
+
+h2, .section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, 3.6vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+h3, .feature-title, .card-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+h4 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+p, span, li, button, input, textarea, a {
+  font-family: var(--font-main);
+}
+
+.font-display {
+  font-family: var(--font-display) !important;
+}
+
+.font-main {
+  font-family: var(--font-main) !important;
+}
+
+.font-mono {
+  font-family: var(--font-mono) !important;
 }
 
 ::selection { background: rgba(255, 107, 0, 0.35); color: #fff; }
 
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: var(--bg-dark); }
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--orange-primary), var(--blue-primary));
-  border-radius: 8px;
+/* Clean Native Scrollbar - Hidden by default, reveals on edge hover */
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
 }
 
-/* Custom Sleek Container Scrollbar */
+html:hover {
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 9999px;
+  transition: background 0.3s ease;
+}
+
+html:hover::-webkit-scrollbar-thumb,
+body:hover::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Custom Container Scrollbar */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 107, 0, 0.6) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(10, 13, 24, 0.4);
-  border-radius: 9999px;
+  background: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #ff6b00, #00f0ff);
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 9999px;
-  box-shadow: 0 0 10px rgba(255, 107, 0, 0.4);
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #ff3d00;
+  background: rgba(255, 255, 255, 0.4);
 }
 
 /* Interactive Halftone Canvas & Background Spotlights */

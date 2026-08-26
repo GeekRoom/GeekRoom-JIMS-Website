@@ -60,12 +60,11 @@ function ContactPage() {
 
   return (
     <main className="contact-page">
-      <div className="layout-shell pt-16">
+      <div className="layout-shell pt-32 sm:pt-36">
         <section className="hero-panel" aria-labelledby="page-title">
-          <h1 className="hero-title" id="page-title">
-            Contact <span>Us</span>
+          <h1 className="hero-title hero-title-premium font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight uppercase" id="page-title">
+            CONTACT <span className="text-gradient-orange">US</span>
           </h1>
-          <p className="hero-kicker">Start a conversation</p>
         </section>
 
         <section

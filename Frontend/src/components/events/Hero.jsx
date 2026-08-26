@@ -37,12 +37,11 @@ export default function HeroSection() {
 
   return (
     <section>
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 pb-2 pt-4">
-        
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 pb-2 pt-0 sm:pt-4">
+
         {/* Main Section Header */}
-        <h1 className="hero-title-premium block font-display text-3xl sm:text-5xl font-extrabold mb-4">
-          <span className="hero-title-word">Events</span>
-          <span className="hero-title-dot text-[#ff6b00]">.</span>
+        <h1 className="hero-title hero-title-premium block font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold mb-6 tracking-tight uppercase">
+          <span className="hero-title-word">EVENTS</span>
         </h1>
 
         <div className="grid grid-cols-1 items-stretch gap-4 lg:grid-cols-2">
@@ -74,12 +73,12 @@ export default function HeroSection() {
 
           {/* RIGHT CARD - LIVE TERMINAL (Bluish / Cyan Accent Glow with Infinite Typewriter Loop) */}
           <div className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-[#ff6b00]/40 bg-[#0a0d18]/90 p-4 sm:p-5 font-mono shadow-[0_0_30px_rgba(255,107,0,0.15)] backdrop-blur-xl transition-all duration-500 hover:border-[#00f0ff] hover:shadow-[0_0_40px_rgba(0,240,255,0.25)] min-h-[170px]">
-            
+
             {/* Dynamic Animated Background Glows */}
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,107,0,0.15),transparent_60%)] opacity-80 transition-opacity duration-500 group-hover:opacity-100" />
             <div className="pointer-events-none absolute -left-20 -top-20 h-40 w-40 animate-pulse rounded-full bg-[#00f0ff]/20 blur-[50px]" />
             <div className="pointer-events-none absolute -bottom-20 -right-20 h-40 w-40 animate-pulse rounded-full bg-[#ff3d00]/20 blur-[50px]" />
-            
+
             {/* Top Animated Laser Line */}
             <div className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#ff6b00] to-transparent animate-pulse" />
 

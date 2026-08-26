@@ -95,15 +95,14 @@ export default function HighlightsPage() {
   };
 
   return (
-    <div className="coverflow-page-wrapper pt-32 sm:pt-40">
+    <div className="coverflow-page-wrapper pt-32 sm:pt-36">
       <div className="coverflow-bg-glow-1" />
       <div className="coverflow-bg-glow-2" />
 
       {/* Premium Header matching page design */}
       <div className="relative z-20 mx-auto w-full max-w-7xl px-6 mb-8 text-left">
-        <h1 className="hero-title-premium block font-display text-4xl font-extrabold sm:text-6xl mb-4">
-          <span className="hero-title-word text-white">Highlights</span>
-          <span className="hero-title-dot text-[#ff6b00]">.</span>
+        <h1 className="hero-title hero-title-premium block font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold mb-6 tracking-tight uppercase">
+          <span className="hero-title-word text-white">HIGHLIGHTS</span>
         </h1>
         <p className="max-w-2xl text-[15px] leading-7 text-[#94a3b8]">
           Take a look back at some of the most memorable moments, hackathons, and workshops hosted by Geek Room JIMS.

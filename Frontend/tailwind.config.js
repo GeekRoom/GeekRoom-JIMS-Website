@@ -19,8 +19,10 @@ export default {
         mist: "#9fb8b3",
       },
       fontFamily: {
+        sans: ["'Outfit'", "sans-serif"],
+        main: ["'Outfit'", "sans-serif"],
         display: ["'Space Grotesk'", "sans-serif"],
-        body: ["'Inter'", "sans-serif"],
+        body: ["'Outfit'", "sans-serif"],
         mono: ["'JetBrains Mono'", "monospace"],
       },
       backgroundImage: {
