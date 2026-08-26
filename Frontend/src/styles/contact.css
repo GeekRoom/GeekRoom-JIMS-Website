@@ -98,7 +98,7 @@
 }
 
 .hero-title {
-  margin: 28px 0 0;
+  margin: 0;
   color: #ffffff;
   font-family: var(--font-display);
   font-size: clamp(4.4rem, 8.8vw, 7.7rem);
@@ -141,6 +141,14 @@
   min-height: 538px;
   border-radius: 28px;
   overflow: hidden;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.contact-panel:hover {
+  border-color: var(--orange-border);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), 0 0 35px rgba(255, 107, 0, 0.25);
 }
 
 .form-card {
@@ -313,12 +321,32 @@
   transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
-.social-links a:hover,
 .social-links a:focus-visible {
-  transform: translateY(-2px);
-  border-color: rgba(0, 240, 255, 0.45);
-  background: rgba(0, 240, 255, 0.1);
   outline: none;
+}
+
+.social-links a.instagram:hover,
+.social-links a.instagram:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(225, 48, 108, 0.5);
+  background: rgba(225, 48, 108, 0.2);
+  color: #e1306c;
+}
+
+.social-links a.youtube:hover,
+.social-links a.youtube:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(255, 0, 0, 0.5);
+  background: rgba(255, 0, 0, 0.2);
+  color: #ff0000;
+}
+
+.social-links a.linkedin:hover,
+.social-links a.linkedin:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(0, 119, 181, 0.5);
+  background: rgba(0, 119, 181, 0.2);
+  color: #0077b5;
 }
 
 .social-links svg {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Clock, Mail, MapPin, Send } from "lucide-react";
-import { FaGithub, FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+import { FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
 import { api } from "../../utils/api";
 import "../../styles/contact.css";
 
@@ -42,21 +42,38 @@ function ContactPage() {
     }
   };
 
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((centerY - y) / centerY) * 0.8;
+    const rotateY = ((x - centerX) / centerX) * 0.8;
+    card.style.transform = `perspective(1200px) translateY(-3px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  };
+
+  const handleMouseLeave = (e) => {
+    e.currentTarget.style.transform = "perspective(1200px) translateY(0px) rotateX(0deg) rotateY(0deg)";
+  };
+
   return (
     <main className="contact-page">
       <div className="layout-shell pt-16">
         <section className="hero-panel" aria-labelledby="page-title">
-          <span className="section-badge">
-            <span className="badge-dot" aria-hidden="true" />
-            Geek Room JIMS - New Delhi
-          </span>
           <h1 className="hero-title" id="page-title">
             Contact <span>Us</span>
           </h1>
           <p className="hero-kicker">Start a conversation</p>
         </section>
 
-        <section className="contact-panel glass-card" id="contact">
+        <section
+          className="contact-panel glass-card"
+          id="contact"
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+        >
           <form className="form-card" onSubmit={handleSubmit}>
             <h2>Get In Touch</h2>
 
@@ -127,17 +144,14 @@ function ContactPage() {
                 <p>Updates, events, workshops, and student tech moments.</p>
               </div>
               <div className="social-links">
-                <a href="#" aria-label="Instagram">
+                <a href="https://www.instagram.com/geekroom_jims?igsi=Z3o2c2lycXE1NGQy" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="instagram">
                   <FaInstagram aria-hidden="true" />
                 </a>
-                <a href="#" aria-label="LinkedIn">
+                <a href="https://youtube.com/@geekfeed-grj?si=ZAHaBE9uvgMGVkLM" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="youtube">
+                  <FaYoutube aria-hidden="true" />
+                </a>
+                <a href="https://www.linkedin.com/company/geekroom-jims/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="linkedin">
                   <FaLinkedinIn aria-hidden="true" />
-                </a>
-                <a href="#" aria-label="GitHub">
-                  <FaGithub aria-hidden="true" />
-                </a>
-                <a href="#" aria-label="Twitter">
-                  <FaTwitter aria-hidden="true" />
                 </a>
               </div>
             </div>

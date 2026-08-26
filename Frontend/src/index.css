@@ -140,7 +140,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .glass-card:hover {
   border-color: var(--orange-border);
-  transform: translateY(-6px) perspective(1000px) rotateX(1.5deg) rotateY(-1.5deg);
+  transform: translateY(-6px);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 107, 0, 0.35);
 }
 

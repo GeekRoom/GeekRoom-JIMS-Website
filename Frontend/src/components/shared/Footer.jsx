@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaGithub, FaLinkedinIn, FaInstagram, FaDiscord } from 'react-icons/fa';
+import { FaLinkedinIn, FaInstagram, FaYoutube } from 'react-icons/fa';
 import { MapPin, Mail } from 'lucide-react';
 
 export default function Footer() {
@@ -75,17 +75,14 @@ export default function Footer() {
 
             {/* Social Icons inside a glass pill */}
             <div className="inline-flex items-center gap-2 p-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
-              <a href="https://github.com" target="_blank" rel="noreferrer" className="w-9 h-9 rounded-full bg-transparent hover:bg-white/10 flex items-center justify-center text-white/70 hover:text-white transition-all duration-300" aria-label="GitHub">
-                <FaGithub size={16} />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="w-9 h-9 rounded-full bg-transparent hover:bg-[#0077b5]/20 hover:border-[#0077b5]/50 border border-transparent flex items-center justify-center text-white/70 hover:text-[#0077b5] transition-all duration-300" aria-label="LinkedIn">
-                <FaLinkedinIn size={15} />
-              </a>
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="w-9 h-9 rounded-full bg-transparent hover:bg-[#e1306c]/20 hover:border-[#e1306c]/50 border border-transparent flex items-center justify-center text-white/70 hover:text-[#e1306c] transition-all duration-300" aria-label="Instagram">
+              <a href="https://www.instagram.com/geekroom_jims?igsi=Z3o2c2lycXE1NGQy" target="_blank" rel="noreferrer" className="w-9 h-9 rounded-full bg-transparent hover:bg-[#e1306c]/20 hover:border-[#e1306c]/50 border border-transparent flex items-center justify-center text-white/70 hover:text-[#e1306c] transition-all duration-300" aria-label="Instagram">
                 <FaInstagram size={16} />
               </a>
-              <a href="https://discord.gg" target="_blank" rel="noreferrer" className="w-9 h-9 rounded-full bg-transparent hover:bg-[#5865F2]/20 hover:border-[#5865F2]/50 border border-transparent flex items-center justify-center text-white/70 hover:text-[#5865F2] transition-all duration-300" aria-label="Discord">
-                <FaDiscord size={16} />
+              <a href="https://youtube.com/@geekfeed-grj?si=ZAHaBE9uvgMGVkLM" target="_blank" rel="noreferrer" className="w-9 h-9 rounded-full bg-transparent hover:bg-[#ff0000]/20 hover:border-[#ff0000]/50 border border-transparent flex items-center justify-center text-white/70 hover:text-[#ff0000] transition-all duration-300" aria-label="YouTube">
+                <FaYoutube size={16} />
+              </a>
+              <a href="https://www.linkedin.com/company/geekroom-jims/" target="_blank" rel="noreferrer" className="w-9 h-9 rounded-full bg-transparent hover:bg-[#0077b5]/20 hover:border-[#0077b5]/50 border border-transparent flex items-center justify-center text-white/70 hover:text-[#0077b5] transition-all duration-300" aria-label="LinkedIn">
+                <FaLinkedinIn size={15} />
               </a>
             </div>
           </div>
