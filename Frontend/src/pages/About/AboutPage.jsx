@@ -18,10 +18,7 @@ export const AboutPage = () => {
         <section className="px-6 pt-16 pb-12 bg-transparent relative z-10" id="team-section">
           <div className="max-w-7xl mx-auto relative z-10 border-t border-white/10 pt-16">
             <div className="mb-12">
-              <span className="font-mono text-xs font-bold uppercase tracking-widest text-[#ff6b00]">
-                LEADERSHIP & CORE TEAM
-              </span>
-              <h2 className="font-display text-3xl sm:text-5xl font-extrabold text-white mt-2 tracking-tight">
+              <h2 className="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
                 The Minds Behind <span className="text-gradient-orange">Geek Room</span>
               </h2>
             </div>

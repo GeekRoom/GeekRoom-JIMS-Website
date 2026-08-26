@@ -14,10 +14,7 @@ export default function Faq() {
     <section className="mx-auto w-full max-w-7xl px-6 py-12 border-t border-white/10 relative">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div className="lg:col-span-4">
-          <span className="font-mono text-xs font-bold uppercase tracking-widest text-[#00f0ff]">
-            HELP &amp; INFO
-          </span>
-          <h2 className="font-display text-3xl sm:text-4xl text-white font-extrabold tracking-tight mt-1">
+          <h2 className="font-display text-3xl sm:text-4xl text-white font-extrabold tracking-tight">
             Frequently Asked <span className="text-gradient-orange">Questions</span>
           </h2>
           <p className="text-sm text-[#94a3b8] mt-3 leading-relaxed">
