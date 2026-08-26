@@ -6,6 +6,8 @@ import AdminLayout from "./components/layouts/AdminLayout";
 import {
   HomePage,
   EventsPage,
+  EventDetailPage,
+  YearEventsPage,
   AboutPage,
   HighlightsPage,
   ContactPage,
@@ -33,6 +35,8 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/events" element={<EventsPage />} />
+          <Route path="/events/:id" element={<EventDetailPage />} />
+          <Route path="/events/year/:year" element={<YearEventsPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/highlights" element={<HighlightsPage />} />
           <Route path="/contact" element={<ContactPage />} />
