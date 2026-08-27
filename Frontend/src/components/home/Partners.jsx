@@ -16,31 +16,28 @@ export default function Partners() {
     <section id="partners" className="section-padding" style={{ paddingBottom: '60px' }}>
       <div className="container">
         <div className="section-header">
-          <div className="section-badge">
-            <i className="fa-solid fa-handshake" /> COLLABORATIONS
-          </div>
           <h2 className="section-title">
-            OUR <span className="text-gradient-blue">PARTNERS</span>
+            OUR <span className="text-gradient-blue">COLLABORATORS</span>
           </h2>
           <p className="section-description">
-            Partnering with world-class organizations, platforms, and developer communities.
+            Building connections with leading names across the tech ecosystem.
           </p>
         </div>
       </div>
 
-        <div className="glass-marquee-panel">
-          <div className="marquee-track">
-            {[...row1, ...row1, ...row1, ...row1].map((item, idx) => (
-              <div
-                key={idx}
-                className={`liquid-glass-pill ${idx % 2 === 0 ? 'pill-orange' : 'pill-blue'}`}
-              >
-                <span className="pill-dot" />
-                <span className="pill-text">{item.name}</span>
-              </div>
-            ))}
-          </div>
+      <div className="glass-marquee-panel">
+        <div className="marquee-track">
+          {[...row1, ...row1, ...row1, ...row1].map((item, idx) => (
+            <div
+              key={idx}
+              className={`liquid-glass-pill ${idx % 2 === 0 ? 'pill-orange' : 'pill-blue'}`}
+            >
+              <span className="pill-dot" />
+              <span className="pill-text">{item.name}</span>
+            </div>
+          ))}
         </div>
+      </div>
     </section>
   );
 }

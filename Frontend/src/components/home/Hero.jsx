@@ -34,9 +34,8 @@ export default function Hero() {
       <div className="container">
         <div className="hero-content">
           <div className="pill-community-badge">
-            <span className="badge-dot" />
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem' }}>
-              🚀 Geekroom JIMS Official Tech Community
+              Geekroom JIMS Official Tech Community
             </span>
           </div>
 
@@ -47,7 +46,7 @@ export default function Hero() {
           </h1>
 
           <p className="hero-subtitle">
-            Geek Room JIMS is the premier developer community empowering students through hackathons, cutting-edge AI & Web3 workshops, and tech mentorship.
+            Geek Room JIMS empowers students to BUILD innovative solutions, LEARN through hands-on tech experiences, and CREATE impactful projects with hackathons, AI workshops, and peer-led tech mentorship.
           </p>
 
           <div className="hero-cta-group">

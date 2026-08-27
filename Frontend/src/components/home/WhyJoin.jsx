@@ -23,11 +23,8 @@ export default function WhyJoin() {
     <section id="why-join" className="section-padding">
       <div className="container">
         <div className="section-header">
-          <div className="section-badge">
-            <i className="fa-solid fa-bolt" /> WHY JOIN GEEK ROOM?
-          </div>
           <h2 className="section-title">
-            BUILT FOR <span className="text-gradient-orange">BUILDERS</span> & TECH LEADERS
+            WHY JOIN <span className="text-gradient-orange">GEEK ROOM?</span>
           </h2>
           <p className="section-description">
             Accelerate your skills, build real-world projects, and connect with peer developers.

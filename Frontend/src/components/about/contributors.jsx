@@ -2,12 +2,9 @@ import React from 'react';
 import { FaLinkedinIn } from 'react-icons/fa';
 
 const contributorsData = [
-  { name: 'JD Doe', role: 'Design', linkedin: '#' },
-  { name: 'Sam Smith', role: 'Backend', linkedin: '#' },
-  { name: 'Emily R.', role: 'Events', linkedin: '#' },
-  { name: 'Alex B.', role: 'Frontend', linkedin: '#' },
-  { name: 'Jordan K.', role: 'Content', linkedin: '#' },
-  { name: 'Taylor M.', role: 'Social', linkedin: '#' }
+  { name: 'Manmeet Singh', linkedin: 'https://www.linkedin.com/in/manmeet-singh-19b425270/s' },
+  { name: 'Khushboo Joshi', linkedin: 'https://www.linkedin.com/in/khushboo-joshi-466525329' },
+  { name: 'Parth Mangla', linkedin: 'https://www.linkedin.com/in/parth-mangla-368357287/' }
 ];
 
 export default function Contributors() {

@@ -20,8 +20,8 @@ const resolveImg = (relativePath) => {
 export const coverflowPhotos = [
   {
     id: "cf1",
-    title: "Gear Up",
-    subtitle: "Hands-on Technical Demonstration",
+    title: "MCA Orientation",
+    subtitle: "2026",
     src: resolveImg("prastuti/Screenshot 2026-08-09 211505.png"),
   },
   {
@@ -32,50 +32,32 @@ export const coverflowPhotos = [
   },
   {
     id: "cf3",
-    title: "Tensorflow Workshop",
-    subtitle: "Machine Learning Foundations",
-    src: resolveImg("prastuti/Screenshot 2026-08-09 211523.png"),
-  },
-  {
-    id: "cf4",
-    title: "Code Clash",
+    title: "Code Cubicle 2.0",
     subtitle: "Competitive Programming Contest",
     src: resolveImg("Unwanted/hack4.png"),
   },
   {
-    id: "cf5",
-    title: "SIH Grand Finale",
-    subtitle: "Ministry of Education 1st Winner",
+    id: "cf4",
+    title: "Prastuti Ideathon",
+    subtitle: "Organizers",
     src: resolveImg("prastuti/Screenshot 2026-08-09 211125.png"),
   },
   {
-    id: "cf6",
+    id: "cf5",
     title: "Hack Vortex 2.0",
-    subtitle: "24-Hour Non-stop Hackathon",
+    subtitle: "1 Day Hackathon",
     src: resolveImg("vortex 2.0/hackvortex2.png"),
   },
   {
-    id: "cf7",
+    id: "cf6",
     title: "Prastuti Ideathon",
-    subtitle: "National Startup Pitch",
-    src: resolveImg("prastuti/IMG_20260314_123226945.jpg"),
-  },
-  {
-    id: "cf8",
-    title: "CodeKshetra 2025",
-    subtitle: "NSUT Hackathon Finale",
+    subtitle: "Winners",
     src: resolveImg("prastuti/Screenshot 2026-08-09 211406.png"),
   },
   {
-    id: "cf9",
-    title: "CodeCubicle Hackathon",
-    subtitle: "Zero-Trust Security Track Winner",
-    src: resolveImg("CodeCubicle/CodeCubicle.png"),
-  },
-  {
-    id: "cf10",
+    id: "cf7",
     title: "GrandPrix Outstation",
-    subtitle: "IIT Roorkee Contingent Showcase",
+    subtitle: "Paytm Office Noida",
     src: resolveImg("GrandPrix/GrandPrix1.png"),
   },
 ];

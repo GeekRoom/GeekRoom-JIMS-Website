@@ -13,13 +13,13 @@ export const AboutPage = () => {
       <main className="flex-grow z-10 relative pt-32 sm:pt-40 pb-16">
         <Hero />
         <Purpose />
-        
+
         {/* Team / Leadership Section */}
         <section className="px-6 pt-16 pb-12 bg-transparent relative z-10" id="team-section">
           <div className="max-w-7xl mx-auto relative z-10 border-t border-white/10 pt-16">
             <div className="mb-12">
               <h2 className="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-                The Minds Behind <span className="text-gradient-orange">Geek Room</span>
+                Meet The Team Behind <span className="text-gradient-orange">Geek Room JIMS</span>
               </h2>
             </div>
             <Presidents />
