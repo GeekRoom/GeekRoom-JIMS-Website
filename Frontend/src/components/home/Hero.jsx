@@ -6,7 +6,7 @@ export default function Hero() {
 
   useEffect(() => {
     let current = { members: 0, events: 0, partners: 0 };
-    const targets = { members: 100, events: 10, partners: 10 };
+    const targets = { members: 100, events: 10, partners: 7 };
 
     const timer = setInterval(() => {
       let done = true;
@@ -36,7 +36,7 @@ export default function Hero() {
           <div className="pill-community-badge">
             <span className="badge-dot" />
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem' }}>
-              🚀 Geekroom JIMS Official Tech Society
+              🚀 Geekroom JIMS Official Tech Community
             </span>
           </div>
 
