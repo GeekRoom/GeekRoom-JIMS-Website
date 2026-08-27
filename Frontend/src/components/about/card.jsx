@@ -36,7 +36,11 @@ export default function TeamMemberCard({ member }) {
         </div>
 
         <a
-          href={member.linkedin && member.linkedin !== '#' ? member.linkedin : '#'}
+          href={
+            member.linkedin && member.linkedin !== '#'
+              ? (member.linkedin.startsWith('http') ? member.linkedin : `https://${member.linkedin}`)
+              : '#'
+          }
           target={member.linkedin && member.linkedin !== '#' ? '_blank' : '_self'}
           rel="noreferrer"
           className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-slate-300 transition-all duration-300 hover:border-[#ff6b00] hover:bg-[#ff6b00]/20 hover:text-[#ff6b00] hover:shadow-[0_0_15px_rgba(255,107,0,0.5)]"
