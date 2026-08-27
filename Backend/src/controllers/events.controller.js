@@ -13,6 +13,18 @@ const getEventData = async (req) => {
 
         if (req.files?.image?.[0]) {
             eventData.image = await uploadToImageKit(req.files.image[0], '/events/covers');
+        } else if (req.body.remove_cover_image === 'true') {
+            eventData.image = '';
+        }
+        delete eventData.remove_cover_image;
+
+        if (req.body.existing_gallery) {
+            try {
+                eventData.image_gallery = JSON.parse(req.body.existing_gallery);
+            } catch (e) {
+                // Ignore parse errors
+            }
+            delete eventData.existing_gallery;
         }
 
         const galleryFiles = [
@@ -21,9 +33,10 @@ const getEventData = async (req) => {
         ];
 
         if (galleryFiles.length > 0) {
-            eventData.image_gallery = await Promise.all(
+            const newUrls = await Promise.all(
                 galleryFiles.map((file) => uploadToImageKit(file, '/events/gallery'))
             );
+            eventData.image_gallery = [...(eventData.image_gallery || []), ...newUrls];
         }
 
         return eventData;

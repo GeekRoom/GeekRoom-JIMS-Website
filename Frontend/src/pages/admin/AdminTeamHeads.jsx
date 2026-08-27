@@ -135,7 +135,7 @@ export default function AdminTeamHeads() {
                   <td className="p-4 font-medium">{person.name}</td>
                   <td className="p-4">
                     <span className={`px-2 py-1 rounded text-xs ${person.ispresident === 'yes' ? 'bg-purple-500/20 text-purple-400' : 'bg-gray-600 text-gray-300'}`}>
-                      {person.ispresident === 'yes' ? 'President/Core' : 'Head'}
+                      {person.ispresident === 'yes' ? 'President' : 'Head'}
                     </span>
                   </td>
                   <td className="p-4">{person.department || '-'}</td>

@@ -15,7 +15,7 @@ export default function Presidents() {
           .filter(h => h.ispresident === 'yes')
           .map(h => ({
             name: h.name,
-            role: 'President / Core',
+            role: 'President',
             img: h.image,
             linkedin: h.linkedin || '#'
           }));

@@ -16,6 +16,8 @@ export default function AdminEvents() {
   const [imageGalleryFiles, setImageGalleryFiles] = useState([]);
   const galleryInputRef = useRef(null);
   const [editingId, setEditingId] = useState(null);
+  const [existingImage, setExistingImage] = useState(null);
+  const [existingGallery, setExistingGallery] = useState([]);
 
   const fetchEvents = async () => {
     try {
@@ -76,6 +78,8 @@ export default function AdminEvents() {
       registration_link: event.registration_link || event.link || '',
       registration_deadline: event.registration_deadline ? new Date(event.registration_deadline).toISOString().slice(0, 16) : ''
     });
+    setExistingImage(event.image || null);
+    setExistingGallery(event.image_gallery || []);
     setIsModalOpen(true);
   };
 
@@ -93,6 +97,13 @@ export default function AdminEvents() {
         data.append('image_gallery', file);
       });
     }
+    
+    if (editingId) {
+      if (!existingImage && !imageFile) {
+        data.append('remove_cover_image', 'true');
+      }
+      data.append('existing_gallery', JSON.stringify(existingGallery));
+    }
 
     try {
       if (editingId) {
@@ -104,6 +115,8 @@ export default function AdminEvents() {
       setImageFile(null);
       setImageGalleryFiles([]);
       setEditingId(null);
+      setExistingImage(null);
+      setExistingGallery([]);
       setFormData({ title: '', description: '', date: '', venue: '', category: '', status: 'past', format: 'offline', registration_link: '', registration_deadline: '' });
       fetchEvents();
     } catch (error) {
@@ -146,6 +159,8 @@ export default function AdminEvents() {
             setEditingId(null);
             setImageFile(null);
             setImageGalleryFiles([]);
+            setExistingImage(null);
+            setExistingGallery([]);
             setFormData({ title: '', description: '', date: '', venue: '', category: '', status: 'past', format: 'offline', registration_link: '', registration_deadline: '' });
             setIsModalOpen(true);
           }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
@@ -212,7 +227,7 @@ export default function AdminEvents() {
           <div className="bg-gray-800 rounded-xl border border-gray-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center p-6 border-b border-gray-700 sticky top-0 bg-gray-800 z-10">
               <h3 className="text-xl font-bold text-gray-100">{editingId ? 'Edit Event' : 'Create New Event'}</h3>
-              <button onClick={() => { setIsModalOpen(false); setEditingId(null); setImageFile(null); setImageGalleryFiles([]); setFormData({ title: '', description: '', date: '', venue: '', category: '', status: 'past', format: 'offline', registration_link: '', registration_deadline: '' }); }} className="text-gray-400 hover:text-white transition-colors"><X size={24} /></button>
+              <button onClick={() => { setIsModalOpen(false); setEditingId(null); setImageFile(null); setImageGalleryFiles([]); setExistingImage(null); setExistingGallery([]); setFormData({ title: '', description: '', date: '', venue: '', category: '', status: 'past', format: 'offline', registration_link: '', registration_deadline: '' }); }} className="text-gray-400 hover:text-white transition-colors"><X size={24} /></button>
             </div>
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
@@ -275,6 +290,18 @@ export default function AdminEvents() {
 
               <div>
                 <label className="block text-sm text-gray-400 mb-1">Cover Image</label>
+                {existingImage && (
+                  <div className="mb-2">
+                    <p className="text-xs text-gray-400 mb-1">Current Cover:</p>
+                    <div className="relative inline-block group">
+                      <img src={existingImage} alt="Current Cover" className="w-32 h-20 object-cover rounded border border-gray-600" />
+                      <button type="button" onClick={() => setExistingImage(null)} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg" title="Remove cover">
+                         <X size={14} />
+                      </button>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">Uploading a new image will replace the current one.</p>
+                  </div>
+                )}
                 <div className="flex items-center gap-2">
                   <input type="file" ref={fileInputRef} accept="image/*" onChange={handleFileChange} className="flex-1 w-full bg-gray-700 border border-gray-600 rounded p-2 text-gray-300" />
                   {imageFile && (
@@ -287,6 +314,22 @@ export default function AdminEvents() {
 
               <div>
                 <label className="block text-sm text-gray-400 mb-1">Image Gallery (Multiple Photos)</label>
+                {existingGallery && existingGallery.length > 0 && (
+                  <div className="mb-2">
+                    <p className="text-xs text-gray-400 mb-1">Current Gallery ({existingGallery.length} images):</p>
+                    <div className="flex flex-wrap gap-3 mt-2">
+                      {existingGallery.map((img, i) => (
+                         <div key={i} className="relative inline-block group">
+                           <img src={img} alt={`Gallery ${i+1}`} className="w-20 h-20 object-cover rounded border border-gray-600" />
+                           <button type="button" onClick={() => setExistingGallery(prev => prev.filter((_, index) => index !== i))} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg" title="Remove image">
+                             <X size={14} />
+                           </button>
+                         </div>
+                      ))}
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">Hover over an image to remove it. Uploading new images will add to this gallery.</p>
+                  </div>
+                )}
                 <div className="flex items-center gap-2">
                   <input type="file" multiple ref={galleryInputRef} accept="image/*" onChange={(e) => setImageGalleryFiles(Array.from(e.target.files))} className="flex-1 w-full bg-gray-700 border border-gray-600 rounded p-2 text-gray-300" />
                   {imageGalleryFiles.length > 0 && (
@@ -299,7 +342,7 @@ export default function AdminEvents() {
               </div>
 
               <div className="flex justify-end gap-3 pt-4 border-t border-gray-700 mt-6">
-                <button type="button" onClick={() => { setIsModalOpen(false); setEditingId(null); setImageFile(null); setImageGalleryFiles([]); setFormData({ title: '', description: '', date: '', venue: '', category: '', status: 'past', format: 'offline', registration_link: '', registration_deadline: '' }); }} className="px-4 py-2 rounded text-gray-300 hover:bg-gray-700">Cancel</button>
+                <button type="button" onClick={() => { setIsModalOpen(false); setEditingId(null); setImageFile(null); setImageGalleryFiles([]); setExistingImage(null); setExistingGallery([]); setFormData({ title: '', description: '', date: '', venue: '', category: '', status: 'past', format: 'offline', registration_link: '', registration_deadline: '' }); }} className="px-4 py-2 rounded text-gray-300 hover:bg-gray-700">Cancel</button>
                 <button type="submit" className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white">{editingId ? 'Update Event' : 'Save Event'}</button>
               </div>
             </form>
