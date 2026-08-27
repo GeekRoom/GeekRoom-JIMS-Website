@@ -70,7 +70,10 @@ const updateTeamHead = async (req, res) => {
 
         if (req.file) {
             teamHeadData.image = await uploadToImageKit(req.file, '/team-heads');
+        } else if (req.body.remove_image === 'true') {
+            teamHeadData.image = '';
         }
+        delete teamHeadData.remove_image;
 
         const teamHead = await TeamHead.findByIdAndUpdate(req.params.id, teamHeadData, {
             new: true,
