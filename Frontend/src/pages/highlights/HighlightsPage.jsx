@@ -6,8 +6,15 @@ import "../../styles/highlights.css";
 export default function HighlightsPage() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const nextSlide = () => {
     setActiveIndex((prev) => (prev + 1) % coverflowPhotos.length);
@@ -73,8 +80,8 @@ export default function HighlightsPage() {
     }
 
     // Side cards positioning
-    const isMobile = window.innerWidth < 640;
-    const isTablet = window.innerWidth < 1024;
+    const isMobile = windowWidth < 640;
+    const isTablet = windowWidth < 1024;
     const spacing = isMobile ? 75 : isTablet ? 140 : 200;
     const zSpacing = 160;
 
@@ -112,7 +119,7 @@ export default function HighlightsPage() {
       {/* Navigation Arrows */}
       <button
         type="button"
-        className="coverflow-nav-btn prev"
+        className="coverflow-nav-btn prev w-[42px] h-[42px] sm:w-[52px] sm:h-[52px] left-[8px] sm:left-[2%]"
         onClick={prevSlide}
         aria-label="Previous photo"
       >
@@ -121,7 +128,7 @@ export default function HighlightsPage() {
 
       <button
         type="button"
-        className="coverflow-nav-btn next"
+        className="coverflow-nav-btn next w-[42px] h-[42px] sm:w-[52px] sm:h-[52px] right-[8px] sm:right-[2%]"
         onClick={nextSlide}
         aria-label="Next photo"
       >
@@ -130,7 +137,7 @@ export default function HighlightsPage() {
 
       {/* 3D Stage Container */}
       <div
-        className="coverflow-stage"
+        className="coverflow-stage h-[310px] md:h-[400px]"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -144,7 +151,7 @@ export default function HighlightsPage() {
           return (
             <div
               key={photo.id}
-              className={`coverflow-card ${isActive ? "active" : ""}`}
+              className={`coverflow-card w-[86vw] h-[240px] -mt-[120px] -ml-[43vw] rounded-[1rem] sm:w-[450px] sm:h-[290px] sm:-mt-[145px] sm:-ml-[225px] sm:rounded-[1.25rem] lg:w-[550px] lg:h-[350px] lg:-mt-[175px] lg:-ml-[275px] lg:rounded-[1.5rem] ${isActive ? "active" : ""}`}
               style={style}
               onClick={() => setActiveIndex(index)}
             >
@@ -153,9 +160,9 @@ export default function HighlightsPage() {
                 alt={photo.title}
                 className="coverflow-card-img"
               />
-              <div className="coverflow-card-overlay">
-                <h3 className="coverflow-card-title">{photo.title}</h3>
-                <p className="coverflow-card-subtitle">{photo.subtitle}</p>
+              <div className="coverflow-card-overlay p-4 px-5 sm:p-6 sm:px-7">
+                <h3 className="coverflow-card-title text-[1.1rem] sm:text-[1.35rem]">{photo.title}</h3>
+                <p className="coverflow-card-subtitle text-[0.7rem] sm:text-[0.78rem]">{photo.subtitle}</p>
               </div>
             </div>
           );
