@@ -53,11 +53,5 @@ export const coverflowPhotos = [
     title: "Prastuti Ideathon",
     subtitle: "Winners",
     src: resolveImg("prastuti/Screenshot 2026-08-09 211406.png"),
-  },
-  {
-    id: "cf7",
-    title: "GrandPrix Outstation",
-    subtitle: "Paytm Office Noida",
-    src: resolveImg("GrandPrix/GrandPrix1.png"),
-  },
+  }
 ];
