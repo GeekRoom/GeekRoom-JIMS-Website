@@ -95,7 +95,7 @@ export default function HighlightsPage() {
   };
 
   return (
-    <div className="coverflow-page-wrapper pt-32 sm:pt-36">
+    <div className="coverflow-page-wrapper pt-32 sm:pt-40">
       <div className="coverflow-bg-glow-1" />
       <div className="coverflow-bg-glow-2" />
 

@@ -60,7 +60,7 @@ function ContactPage() {
 
   return (
     <main className="contact-page">
-      <div className="layout-shell pt-32 sm:pt-36">
+      <div className="layout-shell pt-32 sm:pt-40">
         <section className="hero-panel" aria-labelledby="page-title">
           <h1 className="hero-title hero-title-premium font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight uppercase" id="page-title">
             CONTACT <span className="text-gradient-orange">US</span>

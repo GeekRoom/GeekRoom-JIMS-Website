@@ -30,7 +30,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section id="hero" className="hero-section">
+    <section id="hero" className="hero-section pt-32 sm:pt-40">
       <div className="container">
         <div className="hero-content">
           <div className="pill-community-badge">

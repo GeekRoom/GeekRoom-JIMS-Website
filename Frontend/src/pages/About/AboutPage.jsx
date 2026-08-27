@@ -10,7 +10,7 @@ import Faq from '../../components/about/faq';
 export const AboutPage = () => {
   return (
     <div className="about-page text-[#f8fafc] bg-transparent relative pb-20">
-      <main className="flex-grow z-10 relative pt-32 sm:pt-36 pb-16">
+      <main className="flex-grow z-10 relative pt-32 sm:pt-40 pb-16">
         <Hero />
         <Purpose />
         

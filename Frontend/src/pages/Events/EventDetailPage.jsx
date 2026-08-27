@@ -79,7 +79,7 @@ export default function EventDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen relative text-[#f8fafc] bg-transparent pt-28 sm:pt-32 px-4 sm:px-6 flex items-center justify-center">
+      <div className="min-h-screen relative text-[#f8fafc] bg-transparent pt-32 sm:pt-40 px-4 sm:px-6 flex items-center justify-center">
         <div className="text-center font-main">
           <div className="inline-block h-9 w-9 animate-spin rounded-full border-4 border-[#ff6b00] border-t-transparent mb-4 shadow-[0_0_20px_rgba(255,107,0,0.5)]" />
           <p className="text-xs font-bold tracking-wider text-slate-300 font-mono uppercase">Loading Event Details...</p>
@@ -90,7 +90,7 @@ export default function EventDetailPage() {
 
   if (!event) {
     return (
-      <div className="min-h-screen relative text-[#f8fafc] bg-transparent pt-28 sm:pt-32 px-4 sm:px-6">
+      <div className="min-h-screen relative text-[#f8fafc] bg-transparent pt-32 sm:pt-40 px-4 sm:px-6">
         <div className="mx-auto max-w-3xl text-center font-main rounded-2xl border border-white/10 bg-[#0d111c]/80 p-10 backdrop-blur-2xl">
           <h2 className="text-xl font-bold font-display text-white mb-2">Event Not Found</h2>
           <p className="text-slate-400 mb-6 text-xs">The event you are looking for does not exist or has been removed.</p>
@@ -144,7 +144,7 @@ export default function EventDetailPage() {
   ].filter((item) => item.value);
 
   return (
-    <div className="min-h-screen relative text-[#f8fafc] bg-transparent pt-28 sm:pt-32 pb-16">
+    <div className="min-h-screen relative text-[#f8fafc] bg-transparent pt-32 sm:pt-40 pb-16">
       
       {/* Background Ambient Glows */}
       <div className="pointer-events-none fixed top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 h-96 w-96 rounded-full bg-[#ff6b00]/10 blur-[100px] z-0" />
