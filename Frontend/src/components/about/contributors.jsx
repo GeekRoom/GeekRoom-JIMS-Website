@@ -5,7 +5,8 @@ const contributorsData = [
   { name: 'Manmeet Singh', linkedin: 'https://www.linkedin.com/in/manmeet-singh-19b425270/s' },
   { name: 'Khushboo Joshi', linkedin: 'https://www.linkedin.com/in/khushboo-joshi-466525329' },
   { name: 'Parth Mangla', linkedin: 'https://www.linkedin.com/in/parth-mangla-368357287/' },
-  { name: 'Tarundeep Singh', linkedin: 'https://www.linkedin.com/in/tarundeep-singh-45384137b' }
+  { name: 'Tarundeep Singh', linkedin: 'https://www.linkedin.com/in/tarundeep-singh-45384137b' },
+  { name: 'Harshit Tripathi', linkedin: 'https://www.linkedin.com/in/harshit-tripathi-bab616422/' }
 ];
 
 export default function Contributors() {
